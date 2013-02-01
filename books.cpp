@@ -28,17 +28,19 @@ Books::Books()
     branchSelector->addItem("ECE");
     branchSelector->addItem("EEE");
     branchSelector->addItem("IT");
+    branchSelector->addItem("common");
     searchRadioAuthor->setText("Author");
     searchRadioTitle->setText("Title");
     model->setTable("books");
     model->select();
     proxyModel->setSourceModel(model);
-    booksTable->setModel(proxyModel);
+    booksTable->setModel(model);
     booksTable->setSortingEnabled(true);
 
-    adbk = new AddBook;
+    adbk = new AddBook(1);
+    edbk = new AddBook(2);
 
-    completer = new QCompleter(proxyModel);
+    completer = new QCompleter(model);
 
     completer->setCaseSensitivity(Qt::CaseInsensitive);
 
@@ -47,15 +49,16 @@ Books::Books()
     searchRadioTitle->setChecked(true);
     completer->setCompletionColumn(1);
 
-    addBookAction = new QAction("add book", this);
-    QObject::connect(this->addBookAction,SIGNAL(triggered()),this,SLOT(context()));
+    editBookAction = new QAction("Edit", this);
+    deleteBookAction = new QAction("Delete",this);
 
-    booksTable->addAction(this->addBookAction);
-    booksTable->addAction(new QAction("edit",this));
-    booksTable->addAction(new QAction("delete",this));
+
+    booksTable->addAction(this->editBookAction);
+    booksTable->addAction(this->deleteBookAction);
+    booksTable->addAction(new QAction("issue",this));
     booksTable->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    QObject::connect(adbk->ok,SIGNAL(clicked()),this,SLOT(confirmAddBook()));
+
 
     QObject::connect(this->addBookButton,SIGNAL(clicked()),this,SLOT(addBook()));
 
@@ -65,6 +68,12 @@ Books::Books()
     QObject::connect(this->searchBar,SIGNAL(returnPressed()),this,SLOT(searchBooks()));
     QObject::connect(this->searchButton,SIGNAL(clicked()),this,SLOT(searchBooks()));
 
+    //actions
+    QObject::connect(this->editBookAction,SIGNAL(triggered()),this,SLOT(editBook()));
+    QObject::connect(this->deleteBookAction,SIGNAL(triggered()),this,SLOT(deleteBook()));
+
+    QObject::connect(adbk->ok,SIGNAL(clicked()),this,SLOT(confirmAddBook()));
+    QObject::connect(edbk->edit,SIGNAL(clicked()),this,SLOT(confirmEditBook()));
 
     //set layouts
 
@@ -75,11 +84,15 @@ Books::Books()
 
     bookTopLayout->addWidget(branchSelector);
     bookTopLayout->addWidget(addBookButton);
+    bookTopLayout->addWidget(new QWidget,100);
     bookTopLayout->addLayout(searchLayout);
 
+    bookTopLayout->addStretch(5);
+    bookTopLayout->setAlignment(searchLayout,Qt::AlignCenter);
     bookLayout->addLayout(bookTopLayout);
     bookLayout->addWidget(booksTable);
     this->setLayout(bookLayout);
+    //this->setMaximumSize(600,400);
 }
 
 
@@ -111,20 +124,9 @@ void Books::searchCompleter()
         completer->setCompletionColumn(2);
     }
 }
-void Books::context()
-{
 
-    QItemSelectionModel *select = booksTable->selectionModel();
-    QModelIndex i = select->currentIndex();
-    proxyModel->removeRow(i.row());
-    qDebug() << i.row() << i.model();
-
-}
 void Books::addBook()
 {
-    foreach(QLineEdit *widget, adbk->findChildren<QLineEdit*>()) {
-        widget->clear();
-    }
     adbk->exec();
 }
 void Books::confirmAddBook()
@@ -136,12 +138,64 @@ void Books::confirmAddBook()
     QString  pi = adbk->priceInput->text();
     QString  bi = adbk->branchInput->currentText();
 
-    QString qr;
-    qr = "INSERT INTO books(title,author,copies,branch,price) VALUES('"+ ti +"','"+ ai +"','"+ ci +"','"+ bi +"','"+ pi +"')";
+
+    QString qr = QString("INSERT INTO books(title,author,copies,branch,price,number) VALUES('%1','%2','%3','%4','%5','%6')").arg(ti,ai,ci,bi,pi,bni);
     qDebug() << qr;
     QSqlQuery  q(qr);
     model->select();
-    adbk->hide();
 
-    //jjq.exec();
+
+    foreach(QLineEdit *widget, adbk->findChildren<QLineEdit*>()) {
+        widget->clear();
+    }
+    adbk->close();
+
+
+}
+void Books::editBook()
+{
+    QItemSelectionModel *select = booksTable->selectionModel();
+    QModelIndex i = select->currentIndex();
+    QSqlRecord record = model->record(i.row());
+    QVariant ss = record.field("title").value().toString();
+    qDebug() << ss;
+    edbk->currentID = record.field("id").value().toInt();
+    edbk->bookNoInput->setText(record.field("number").value().toString());
+    edbk->titleInput->setText(record.field("title").value().toString());
+    edbk->authorInput->setText(record.field("author").value().toString());
+    edbk->copiesInput->setText(record.field("copies").value().toString());
+    edbk->priceInput->setText(record.field("price").value().toString());
+    edbk->branchInput->setCurrentIndex(edbk->branchInput->findText(record.field("branch").value().toString()));
+
+    edbk->exec();
+}
+
+void Books::confirmEditBook()
+{
+    QString bni = edbk->bookNoInput->text();
+    QString ti = edbk->titleInput->text();
+    QString ai = edbk->authorInput->text();
+    QString  ci = edbk->copiesInput->text();
+    QString  pi = edbk->priceInput->text();
+    QString  bi = edbk->branchInput->currentText();
+    QString qr = QString("UPDATE books SET title='%1',author='%2',copies='%3',branch='%4',price='%5',number='%6' WHERE id=%7").arg(ti,ai,ci,bi,pi,bni,QString::number(edbk->currentID));
+
+    qDebug() << qr;
+    QSqlQuery  q(qr);
+    model->select();
+    edbk->close();
+
+
+    foreach(QLineEdit *widget, edbk->findChildren<QLineEdit*>()) {
+        widget->clear();
+    }
+}
+
+void Books::deleteBook()
+{
+
+    QItemSelectionModel *select = booksTable->selectionModel();
+    QModelIndex i = select->currentIndex();
+    model->removeRow(i.row());
+
 }

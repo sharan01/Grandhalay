@@ -13,10 +13,17 @@ MainWindow::MainWindow(QWidget *parent) :
     tabWidget->setTabPosition(QTabWidget::West);
     //tabWidget->setTabShape(QTabWidget::Triangular);
     tabWidget->addTab(books,"books");
+    tabWidget->addTab(new QWidget,"Students");
+    tabWidget->addTab(new QWidget,"Admin");
 
 
 
     mainLayout->addWidget(tabWidget);
     mainWidget->setLayout(mainLayout);
     mainWidget->show();
+    //this->setMinimumSize(600,400);
+    mainWidget->setMinimumSize(700,500);
+
+
+
 }

@@ -31,9 +31,12 @@ private:
 
     QCompleter *completer;
 
-    QAction *addBookAction;
+    QAction *editBookAction;
+    QAction *deleteBookAction;
+
 
     AddBook *adbk;
+    AddBook *edbk;
 
 
 
@@ -48,9 +51,11 @@ public slots:
     void filterBooks(QString);
     void searchBooks();
     void searchCompleter();
-    void context();
     void addBook();
     void confirmAddBook();
+    void editBook();
+    void confirmEditBook();
+    void deleteBook();
 };
 
 #endif // BOOKS_H

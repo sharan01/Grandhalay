@@ -47,7 +47,7 @@ Welcome::Welcome()
     welcome.setLayout(wLayout);
 
     //temporary
-    //welcome.show();
+   //welcome.show();
    mw = new MainWindow;
 
 
@@ -92,5 +92,4 @@ void Welcome::showAbout()
     msgBox.setText("<img src='logo.png'/> <p>Aurora's Integrated Library System \ndeveloped by .....</p>");
     msgBox.exec();
 }
-
 

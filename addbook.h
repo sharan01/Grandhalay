@@ -25,13 +25,15 @@ public:
     QComboBox *branchInput;
 
     QPushButton *ok;
+    QPushButton *edit;
     QPushButton *cancel;
 
     QVBoxLayout *mainlayout;
     QFormLayout *formLayout;
     QHBoxLayout *buttonLayout;
 
-    explicit AddBook();
+    explicit AddBook(int);
+    int currentID;
 
     
 signals:
