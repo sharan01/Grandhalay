@@ -5,6 +5,7 @@
 #include <QtGui>
 #include <QtSql>
 #include "addbook.h"
+#include "issuebook.h"
 
 class Books : public QWidget
 {
@@ -33,15 +34,18 @@ private:
 
     QAction *editBookAction;
     QAction *deleteBookAction;
+    QAction *issueBookAction;
+    QAction *viewSummaryAction;
 
 
     AddBook *adbk;
     AddBook *edbk;
+    IssueBook *isbk;
 
 
 
 public:
-    explicit Books();
+    explicit Books(QWidget *parent);
 
 
     
@@ -56,6 +60,11 @@ public slots:
     void editBook();
     void confirmEditBook();
     void deleteBook();
+
+    void issueBook();
+    void confirmIssueBook();
+
+    void viewSummary();
 };
 
 #endif // BOOKS_H

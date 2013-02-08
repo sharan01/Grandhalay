@@ -1,6 +1,7 @@
 #include "addbook.h"
 
-AddBook::AddBook(int a)
+AddBook::AddBook(int a,QWidget *parent) :
+    QDialog(parent)
 {
     info = new QLabel("Please enter book details below");
     bookNo = new QLabel("Book Number");

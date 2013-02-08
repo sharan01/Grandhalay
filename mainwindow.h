@@ -13,6 +13,11 @@ private:
     QTabWidget *tabWidget;
     QVBoxLayout* mainLayout;
     Books *books;
+    QIcon bIcon;
+    QIcon sIcon;
+    QIcon aIcon;
+    QSize siz;
+
 public:
     explicit MainWindow(QWidget *parent = 0);
 

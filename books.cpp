@@ -1,6 +1,7 @@
 #include "books.h"
 
-Books::Books()
+Books::Books(QWidget *parent) :
+    QWidget(parent)
 {
 
 
@@ -37,8 +38,9 @@ Books::Books()
     booksTable->setModel(model);
     booksTable->setSortingEnabled(true);
 
-    adbk = new AddBook(1);
-    edbk = new AddBook(2);
+    adbk = new AddBook(1,this);
+    edbk = new AddBook(2,this);
+    isbk = new IssueBook;
 
     completer = new QCompleter(model);
 
@@ -51,12 +53,16 @@ Books::Books()
 
     editBookAction = new QAction("Edit", this);
     deleteBookAction = new QAction("Delete",this);
+    issueBookAction = new QAction("Issue Book", this);
+    viewSummaryAction = new QAction("summary", this);
 
 
     booksTable->addAction(this->editBookAction);
     booksTable->addAction(this->deleteBookAction);
-    booksTable->addAction(new QAction("issue",this));
+    booksTable->addAction(this->issueBookAction);
+    booksTable->addAction(this->viewSummaryAction);
     booksTable->setContextMenuPolicy(Qt::ActionsContextMenu);
+    booksTable->setColumnHidden(0,true);
 
 
 
@@ -71,9 +77,12 @@ Books::Books()
     //actions
     QObject::connect(this->editBookAction,SIGNAL(triggered()),this,SLOT(editBook()));
     QObject::connect(this->deleteBookAction,SIGNAL(triggered()),this,SLOT(deleteBook()));
+    QObject::connect(this->issueBookAction,SIGNAL(triggered()),this,SLOT(issueBook()));
+    QObject::connect(this->viewSummaryAction,SIGNAL(triggered()),this,SLOT(viewSummary()));
 
     QObject::connect(adbk->ok,SIGNAL(clicked()),this,SLOT(confirmAddBook()));
     QObject::connect(edbk->edit,SIGNAL(clicked()),this,SLOT(confirmEditBook()));
+    QObject::connect(isbk->issueButton,SIGNAL(clicked()),SLOT(confirmIssueBook()));
 
     //set layouts
 
@@ -197,5 +206,51 @@ void Books::deleteBook()
     QItemSelectionModel *select = booksTable->selectionModel();
     QModelIndex i = select->currentIndex();
     model->removeRow(i.row());
+
+}
+
+void  Books::issueBook()
+{
+    QItemSelectionModel *select = booksTable->selectionModel();
+    QModelIndex i = select->currentIndex();
+    QSqlRecord record = model->record(i.row());
+    isbk->bookID = record.field("id").value().toInt();
+    qDebug() << isbk->bookID;
+
+
+    isbk->bookNoI->setText(record.field("number").value().toString());
+    isbk->titleI->setText(record.field("title").value().toString());
+    isbk->authorI->setText(record.field("author").value().toString());
+    isbk->copiesLeftI->setText(record.field("copies").value().toString());
+
+
+    isbk->exec();
+}
+void Books::confirmIssueBook()
+{
+    QItemSelectionModel *select = isbk->studentsTable->selectionModel();
+    QModelIndex i = select->currentIndex();
+    QSqlRecord record = isbk->model->record(i.row());
+    QString sid = record.field("studentID").value().toString();
+    QString bid = QString::number(isbk->bookID);
+    QDate d = isbk->returnDateI->date();
+    QString q = QString("INSERT INTO issue(bookID,studentId,returnDate) values(%1, %2,'%3-%4-%5')").arg(bid,sid).arg(d.year()).arg(d.month()).arg(d.day());
+    QSqlQuery qr(q);
+    if(qr.exec()){
+        qDebug() << "query done";
+    }
+
+    qDebug() << record.field("studentID").value().toInt() << q << sid << d.day() << d.month() << d.year();
+
+
+
+
+    isbk->close();
+
+
+}
+
+void Books::viewSummary()
+{
 
 }

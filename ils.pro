@@ -17,13 +17,15 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     books.cpp \
     actions.cpp \
-    addbook.cpp
+    addbook.cpp \
+    issuebook.cpp
 
 HEADERS  += \
     welcome.h \
     mainwindow.h \
     books.h \
     actions.h \
-    addbook.h
+    addbook.h \
+    issuebook.h
 
 FORMS    +=
