@@ -47,8 +47,8 @@ Welcome::Welcome()
     welcome.setLayout(wLayout);
 
     //temporary
-   //welcome.show();
-   mw = new MainWindow;
+   welcome.show();
+   //mw = new MainWindow;
 
 
     QObject::connect(loginButton,SIGNAL(clicked()),this,SLOT(doLogin()));

@@ -48,6 +48,7 @@ IssueBook::IssueBook()
     studentsTable->setModel(model);
     studentsTable->setColumnHidden(0,true);
     studentsTable->setSortingEnabled(true);
+    studentsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
 
