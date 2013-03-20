@@ -3,14 +3,28 @@
 Books::Books(QWidget *parent) :
     QWidget(parent)
 {
+    qDebug() << "books constructed";
+    model = new QSqlRelationalTableModel;
+    proxyModel = new QSortFilterProxyModel;
 
+    model->setTable("books");
+    model->select();
+    proxyModel->setSourceModel(model);
 
-    //layouts
-    searchLayout = new QGridLayout;
-    bookTopLayout = new QHBoxLayout;
-    bookLayout = new QVBoxLayout;
+    //actions
+    editBookAction = new QAction("Edit", this);
+    deleteBookAction = new QAction("Delete",this);
+    issueBookAction = new QAction("Issue Book", this);
+    viewSummaryAction = new QAction("summary", this);
 
     //widgets
+    createWidgets();
+    createLayout();
+    createConnections();
+
+}
+void Books::createWidgets()
+{
     branchSelector = new QComboBox;
     addBookButton = new QPushButton("Add Book");
     searchBar = new QLineEdit;
@@ -18,9 +32,11 @@ Books::Books(QWidget *parent) :
     searchRadioAuthor = new QRadioButton;
     searchButton = new QPushButton("search");
     booksTable = new QTableView;
+    adbk = new AddBook(1,this);
+    edbk = new AddBook(2,this);
+    isbk = new IssueBook;
+    completer = new QCompleter(model);
 
-    model = new QSqlRelationalTableModel;
-    proxyModel = new QSortFilterProxyModel;
 
     //set
     branchSelector->addItem("ALL");
@@ -32,61 +48,30 @@ Books::Books(QWidget *parent) :
     branchSelector->addItem("common");
     searchRadioAuthor->setText("Author");
     searchRadioTitle->setText("Title");
-    model->setTable("books");
-    model->select();
-    proxyModel->setSourceModel(model);
     booksTable->setModel(model);
     booksTable->setSortingEnabled(true);
-
-    adbk = new AddBook(1,this);
-    edbk = new AddBook(2,this);
-    isbk = new IssueBook;
-
-    completer = new QCompleter(model);
-
+    booksTable->setColumnHidden(0,true);
+    booksTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    booksTable->setContextMenuPolicy(Qt::ActionsContextMenu);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
-
-    searchBar->setCompleter(completer);
-
-    searchRadioTitle->setChecked(true);
     completer->setCompletionColumn(1);
+    searchBar->setCompleter(completer);
+    searchRadioTitle->setChecked(true);
 
-    editBookAction = new QAction("Edit", this);
-    deleteBookAction = new QAction("Delete",this);
-    issueBookAction = new QAction("Issue Book", this);
-    viewSummaryAction = new QAction("summary", this);
-
-
+    //actions
     booksTable->addAction(this->editBookAction);
     booksTable->addAction(this->deleteBookAction);
     booksTable->addAction(this->issueBookAction);
     booksTable->addAction(this->viewSummaryAction);
-    booksTable->setContextMenuPolicy(Qt::ActionsContextMenu);
-    booksTable->setColumnHidden(0,true);
-    booksTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+}
 
+void Books::createLayout()
+{
+    searchLayout = new QGridLayout;
+    bookTopLayout = new QHBoxLayout;
+    bookLayout = new QVBoxLayout;
 
-
-    QObject::connect(this->addBookButton,SIGNAL(clicked()),this,SLOT(addBook()));
-
-    QObject::connect(this->branchSelector,SIGNAL(activated(QString)),this,SLOT(filterBooks(QString)));
-    QObject::connect(this->searchRadioTitle,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
-    QObject::connect(this->searchRadioAuthor,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
-    QObject::connect(this->searchBar,SIGNAL(returnPressed()),this,SLOT(searchBooks()));
-    QObject::connect(this->searchButton,SIGNAL(clicked()),this,SLOT(searchBooks()));
-
-    //actions
-    QObject::connect(this->editBookAction,SIGNAL(triggered()),this,SLOT(editBook()));
-    QObject::connect(this->deleteBookAction,SIGNAL(triggered()),this,SLOT(deleteBook()));
-    QObject::connect(this->issueBookAction,SIGNAL(triggered()),this,SLOT(issueBook()));
-    QObject::connect(this->viewSummaryAction,SIGNAL(triggered()),this,SLOT(viewSummary()));
-
-    QObject::connect(adbk->ok,SIGNAL(clicked()),this,SLOT(confirmAddBook()));
-    QObject::connect(edbk->edit,SIGNAL(clicked()),this,SLOT(confirmEditBook()));
-    QObject::connect(isbk->issueButton,SIGNAL(clicked()),SLOT(confirmIssueBook()));
-
-    //set layouts
-
+    //
     searchLayout->addWidget(searchBar,0,0,1,3);
     searchLayout->addWidget(searchRadioTitle,1,0,1,1);
     searchLayout->addWidget(searchRadioAuthor,1,1,1,1);
@@ -105,6 +90,26 @@ Books::Books(QWidget *parent) :
     //this->setMaximumSize(600,400);
 }
 
+void Books::createConnections()
+{
+    QObject::connect(this->addBookButton,SIGNAL(clicked()),this,SLOT(addBook()));
+
+    QObject::connect(this->branchSelector,SIGNAL(activated(QString)),this,SLOT(filterBooks(QString)));
+    QObject::connect(this->searchRadioTitle,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
+    QObject::connect(this->searchRadioAuthor,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
+    QObject::connect(this->searchBar,SIGNAL(returnPressed()),this,SLOT(searchBooks()));
+    QObject::connect(this->searchButton,SIGNAL(clicked()),this,SLOT(searchBooks()));
+
+    //actions
+    QObject::connect(this->editBookAction,SIGNAL(triggered()),this,SLOT(editBook()));
+    QObject::connect(this->deleteBookAction,SIGNAL(triggered()),this,SLOT(deleteBook()));
+    QObject::connect(this->issueBookAction,SIGNAL(triggered()),this,SLOT(issueBook()));
+    QObject::connect(this->viewSummaryAction,SIGNAL(triggered()),this,SLOT(viewSummary()));
+
+    QObject::connect(adbk->ok,SIGNAL(clicked()),this,SLOT(confirmAddBook()));
+    QObject::connect(edbk->edit,SIGNAL(clicked()),this,SLOT(confirmEditBook()));
+    QObject::connect(isbk->issueButton,SIGNAL(clicked()),SLOT(confirmIssueBook()));
+}
 
 void Books::filterBooks(QString s)
 {

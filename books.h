@@ -42,6 +42,9 @@ private:
     AddBook *edbk;
     IssueBook *isbk;
 
+    void createWidgets();
+    void createLayout();
+    void createConnections();
 
 
 public:

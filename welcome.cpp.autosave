@@ -13,10 +13,6 @@ Welcome::Welcome(QWidget *parent) :
     createWidgets();
     createLayout();
     createConnections();
-
-
-
-
 }
 void Welcome::createResources()
 {
@@ -77,14 +73,12 @@ void Welcome::doLogin()
             if(qry.next()){
                 // credentials are present in db
 
-                QString name = qry.value(0).toString();
-                QString pass = qry.value(1).toString();
+                //QString name = qry.value(0).toString();
+                //QString pass = qry.value(1).toString();
 
                 // emit signal here
                 emit loginSignal();
 
-                //welcome.hide();
-                //mw = new MainWindow;
             }else{
                 loginError->setText("Incorrect login credentials");
                 loginError->setStyleSheet("color:red;");

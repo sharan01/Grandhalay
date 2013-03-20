@@ -3,6 +3,7 @@
 AddBook::AddBook(int a,QWidget *parent) :
     QDialog(parent)
 {
+    qDebug() << "add book constructed";
     info = new QLabel("Please enter book details below");
     bookNo = new QLabel("Book Number");
     title = new QLabel("Title");
@@ -45,6 +46,7 @@ AddBook::AddBook(int a,QWidget *parent) :
 
 
     buttonLayout->addWidget(cancel);
+    // for add book or edit book widget
     if(a==1){
         buttonLayout->addWidget(ok);
     }

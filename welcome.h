@@ -3,44 +3,42 @@
 
 
 #include <mainwindow.h>
-#include <QtSql/QtSql>
 
-#define PATH_TO_DB "/home/srn/Documents/ils/ils/ils.sqlite"
 
-class Welcome : public QObject
+
+
+class Welcome : public QWidget
 {
     Q_OBJECT
 
-public:
-    MainWindow *mw;
-    QWidget welcome;
-
-
-    //layouts
-    QGridLayout *wLayout;
-    QFormLayout *wFormLayout;
-
+private:
     //widgets
+    QPixmap lg;
+    QPixmap ico;
     QLabel *logo;
     QLabel *welcomeMessage;
     QLabel *loginError;
     QLineEdit *nameInput;
     QLineEdit *passInput;
-
-    QPushButton *loginButton;
     QPushButton *aboutButton;
 
+    //layouts
+    QGridLayout *wLayout;
+    QFormLayout *wFormLayout;
 
-    QSqlDatabase db;
+    void createResources();
+    void createWidgets();
+    void createLayout();
+    void createConnections();
+public:
+    QPushButton *loginButton;// public to use in connect main
 
-    explicit Welcome();
-
+    explicit Welcome(QWidget *parent = 0);
+signals:
+    void loginSignal();
 public slots:
     void doLogin();
     void showAbout();
-
-
-
 
 };
 

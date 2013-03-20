@@ -18,7 +18,9 @@ SOURCES += main.cpp \
     books.cpp \
     actions.cpp \
     addbook.cpp \
-    issuebook.cpp
+    issuebook.cpp \
+    admin.cpp \
+    members.cpp
 
 HEADERS  += \
     welcome.h \
@@ -26,6 +28,11 @@ HEADERS  += \
     books.h \
     actions.h \
     addbook.h \
-    issuebook.h
+    issuebook.h \
+    admin.h \
+    members.h
 
 FORMS    +=
+
+RESOURCES += \
+    resources.qrc

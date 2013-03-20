@@ -1,5 +1,10 @@
 #include "welcome.h"
+#include "mainwindow.h"
 #include <QtCore>
+#include <QtSql/QtSql>
+
+#define PATH_TO_DB "/home/srn/Documents/ils/ils/ils.sqlite"
+
 
 int main(int argc, char *argv[])
 {
@@ -9,11 +14,30 @@ int main(int argc, char *argv[])
     ico.addFile("icon.png");
     app.setWindowIcon(ico);
 
+    // db connection
+    QSqlDatabase db;
+    db = QSqlDatabase::addDatabase("QSQLITE"); //  delete in destructor
+    db.setDatabaseName(PATH_TO_DB);
 
-    Welcome w;
+    if(db.open()){
+        qDebug() << "db open";
+    }
 
 
 
+    Welcome *w = new Welcome;
+    MainWindow *mw = new MainWindow;
+
+    /*
+    w->show();
+
+    QObject::connect(w->loginButton,SIGNAL(clicked()),w,SLOT(doLogin()));
+    QObject::connect(w,SIGNAL(loginSignal()),w,SLOT(close()));
+    QObject::connect(w,SIGNAL(loginSignal()),mw,SLOT(show()));
+
+
+    */
+    mw->show();
 
 
     

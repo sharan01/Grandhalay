@@ -4,6 +4,7 @@
 
 IssueBook::IssueBook()
 {
+    qDebug() << "issue constructed";
     bookNo = new QLabel("ISBN");
     title = new QLabel("Title");
     author = new QLabel("Author");
@@ -77,7 +78,7 @@ IssueBook::IssueBook()
 
     this->setLayout(mainLayout);
 
-    qDebug() << "issuebok constructed";
+
 
     QObject::connect(this->searchBar,SIGNAL(textChanged(QString)),this,SLOT(searchStudent(QString)));
 
