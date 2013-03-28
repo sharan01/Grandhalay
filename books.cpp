@@ -109,6 +109,7 @@ void Books::createConnections()
     QObject::connect(adbk->ok,SIGNAL(clicked()),this,SLOT(confirmAddBook()));
     QObject::connect(edbk->edit,SIGNAL(clicked()),this,SLOT(confirmEditBook()));
     QObject::connect(isbk->issueButton,SIGNAL(clicked()),SLOT(confirmIssueBook()));
+    QObject::connect(isbk->studentsTable,SIGNAL(clicked(QModelIndex)),this,SLOT(enablebut()));
 }
 
 void Books::filterBooks(QString s)
@@ -234,34 +235,39 @@ void  Books::issueBook()
 }
 void Books::confirmIssueBook()
 {
-    QItemSelectionModel *select = isbk->studentsTable->selectionModel();
-    QModelIndex i = select->currentIndex();
-    QSqlRecord record = isbk->model->record(i.row());
-
-    QString sid = record.field("studentID").value().toString();
-    QString bid = QString::number(isbk->bookID);
-    QDate d = isbk->returnDateI->date();
-    QString q = QString("INSERT INTO issue(bookID,studentId,returnDate) values(%1, %2,'%3-%4-%5')").arg(bid,sid).arg(d.year()).arg(d.month()).arg(d.day());
-    QSqlQuery qr(q);
     if(isbk->studentsTable->currentIndex().isValid()){
-        if(qr.exec()){
-            qDebug() << "query done";
-        }
-        qDebug() << "selection valid";
+        QItemSelectionModel *select = isbk->studentsTable->selectionModel();
+        QModelIndex i = select->currentIndex();
+        QSqlRecord record = isbk->model->record(i.row());
+
+        QString sid = record.field("studentID").value().toString();
+        QString bid = QString::number(isbk->bookID);
+        QDate d = isbk->returnDateI->date();
+        QString q = QString("INSERT INTO issue(bookID,studentId,returnDate) values(%1, %2,'%3-%4-%5')").arg(bid,sid).arg(d.year()).arg(d.month()).arg(d.day());
+        QSqlQuery qr(q);
+
+            if(qr.exec()){
+                qDebug() << "query done";
+            }
+            qDebug() << "selection valid";
+
+
+
+        //qDebug() << record.field("studentID").value().toInt() << q << sid << d.day() << d.month() << d.year();
+
+
+
+
+        isbk->close();
+
     }
-
-
-    //qDebug() << record.field("studentID").value().toInt() << q << sid << d.day() << d.month() << d.year();
-
-
-
-
-    isbk->close();
-
-
 }
 
 void Books::viewSummary()
 {
 
+}
+void Books::enablebut()
+{
+    isbk->issueButton->setEnabled(true);
 }

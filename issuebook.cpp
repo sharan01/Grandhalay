@@ -29,6 +29,8 @@ IssueBook::IssueBook()
     returnDateI = new QDateEdit();
 
     issueButton = new QPushButton("issue book");
+    // temp
+    issueButton->setDisabled(true);
 
 
     bookInfoLayout = new QGridLayout;

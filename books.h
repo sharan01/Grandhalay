@@ -68,6 +68,7 @@ public slots:
     void confirmIssueBook();
 
     void viewSummary();
+    void enablebut();
 };
 
 #endif // BOOKS_H
