@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtGui>
 #include "books.h"
 #include "admin.h"
 

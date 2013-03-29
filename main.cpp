@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     db.setDatabaseName("ils");
     db.setUserName("root");
     db.setPassword("");
-    db.setHostName("localhost");
+    db.setHostName("instance42514.db.xeround.com:8211");
 
     if(db.open()){
         qDebug() << "db open";
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 
 
     */
-    //mw->show();
+    mw->show();
 
 
     

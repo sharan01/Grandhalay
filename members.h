@@ -1,7 +1,7 @@
 #ifndef MEMBERS_H
 #define MEMBERS_H
 
-#include <QWidget>
+#include <QtWidgets>
 
 class Members : public QWidget
 {

@@ -1,8 +1,7 @@
 #ifndef ADDBOOK_H
 #define ADDBOOK_H
 
-#include <QWidget>
-#include <QtGui>
+#include <QtWidgets>
 
 class AddBook : public QDialog
 {

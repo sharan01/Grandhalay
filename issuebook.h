@@ -1,8 +1,7 @@
 #ifndef ISSUEBOOK_H
 #define ISSUEBOOK_H
 
-#include <QWidget>
-#include <QtGui>
+#include <QtWidgets>
 #include <QtSql>
 
 class IssueBook : public QDialog

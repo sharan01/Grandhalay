@@ -1,10 +1,9 @@
 #ifndef BOOKS_H
 #define BOOKS_H
 
-#include <QWidget>
-#include <QtGui>
+
 #include <QtSql>
-#include "addbook.h"
+#include "addbook.h" /// includes qtwidgets
 #include "issuebook.h"
 
 class Books : public QWidget

@@ -1,8 +1,7 @@
 #ifndef ADMIN_H
 #define ADMIN_H
 
-#include <QWidget>
-#include <QtGui>
+#include <QtWidgets>
 
 
 class Admin : public QWidget
