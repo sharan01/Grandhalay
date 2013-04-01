@@ -4,7 +4,9 @@
 #include <QtSql/QtSql>
 #include <memory>
 
-#define PATH_TO_DB "/home/srn/Documents/ils/ils/ils.sqlite"
+//#define PATH_TO_DB "/home/srn/Documents/ils/ils/ils.sqlite"
+#define PATH_TO_DB "/home/srn/Documents/ils/ils.sqlite"
+
 
 using namespace std;
 
@@ -17,15 +19,10 @@ int main(int argc, char *argv[])
     app.setWindowIcon(ico);
 
     // db connection
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL3");
-
-    //db = QSqlDatabase::addDatabase("QSQLITE"); //  delete in destructor
-    //db.setDatabaseName("PATH_TO_DB");
-    db.setDatabaseName("ils");
-    db.setUserName("root");
-    db.setPassword("");
-    db.setHostName("instance42514.db.xeround.com:8211");
-
+    QSqlDatabase db;
+    db = QSqlDatabase::addDatabase("QSQLITE"); //  delete in destructor
+    db.setDatabaseName(PATH_TO_DB);
+    qDebug() << db.databaseName();
     if(db.open()){
         qDebug() << "db open";
     }else{
@@ -33,8 +30,12 @@ int main(int argc, char *argv[])
     }
 
 
-
-
+    QSqlQuery q("select * from books;");
+    if(q.exec()){
+        qDebug() << "quer done";
+    }else{
+        qDebug() << "query fail";
+    }
 
     unique_ptr<Welcome> w(new Welcome);
     unique_ptr<MainWindow> mw(new MainWindow);
