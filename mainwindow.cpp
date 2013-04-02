@@ -24,14 +24,14 @@ void MainWindow::createWidgets()
     mainWidget = new QWidget(this);
     tabWidget = new QTabWidget(this);
     books = new Books(this);
-    // students or teachers here
+    members = new Members(this);
     admin = new Admin(this);
 
     mainWidget->setWindowTitle("Aurora's Integrated Library System");
 
 
     tabWidget->addTab(books,bIcon,"books  ");
-    tabWidget->addTab(new QWidget,sIcon,"Students  ");
+    tabWidget->addTab(members,sIcon,"Students  ");
     tabWidget->addTab(admin,aIcon,"Admin  ");
 
     tabWidget->setTabPosition(QTabWidget::West);

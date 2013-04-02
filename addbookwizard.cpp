@@ -32,6 +32,8 @@ void AddBookWizard::accept()
     QSqlQuery  q(qr);
 
     QDialog::accept();
+    this->restart();
+
 }
 
 // ========================= detail class ========================== //
@@ -99,6 +101,7 @@ void DetailsPage::createLayouts()
 void DetailsPage::createConnections()
 {
     QObject::connect(this->fetchInfo,SIGNAL(clicked()),this,SLOT(getBookInfoOnline()));
+    //QObject::connect(bookInfoOnline,SIGNAL(dataFetched(QByteArray d)),this,SLOT(getBookInfoOnline()));
 }
 void DetailsPage::registerFields()
 {
@@ -116,7 +119,7 @@ void DetailsPage::getBookInfoOnline()
 {
     qDebug() << "but pressed and isbn ";
     QString isbn = this->ISBNEdit->text();
-    bookInfoOnline.fetchBookInfo(isbn);
+    qDebug() << bookInfoOnline.fetchBookInfo(isbn);
 }
 
 // ============================ final page ========================== //

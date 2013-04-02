@@ -9,16 +9,22 @@ BookInfoOnline::BookInfoOnline()
     QObject::connect(nam, SIGNAL(finished(QNetworkReply*)),this, SLOT(finishedSlot(QNetworkReply*)));
 
 }
-QByteArray BookInfoOnline::fetchBookInfo(QString isbn)
+void BookInfoOnline::fetchBookInfo(QString isbn)
 {
     QString link = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
     qDebug() << link;
     url.setUrl(link);
     reply = nam->get(QNetworkRequest(url));
 
-    return data;
+}
+std::vector<QString> BookInfoOnline::processJson(QByteArray d)
+{
+    QJsonDocument doc;
+    doc.fromBinaryData(d);
+
 }
 
+// slots ============
 void BookInfoOnline::finishedSlot(QNetworkReply* reply)
 {
     // Reading attributes of the reply
@@ -45,6 +51,7 @@ void BookInfoOnline::finishedSlot(QNetworkReply* reply)
 
         qDebug() << stri;
         emit dataFetched(data);
+        //process json(data)
     }
     // Some http error received
     else

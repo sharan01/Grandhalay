@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "books.h"
+#include "members.h"
 #include "admin.h"
 
 class MainWindow : public QWidget
@@ -14,6 +15,7 @@ private:
     QVBoxLayout* mainLayout;
     Books *books;
     Admin *admin;
+    Members *members;
     QIcon bIcon;
     QIcon sIcon;
     QIcon aIcon;
