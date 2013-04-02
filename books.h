@@ -3,7 +3,7 @@
 
 
 #include <QtSql>
-#include "addbook.h" /// includes qtwidgets
+#include "addbookwizard.h" /// includes qtwidgets
 #include "issuebook.h"
 
 class Books : public QWidget
@@ -36,9 +36,7 @@ private:
     QAction *issueBookAction;
     QAction *viewSummaryAction;
 
-
-    AddBook *adbk;
-    AddBook *edbk;
+    AddBookWizard *abw;
     IssueBook *isbk;
 
     void createWidgets();
@@ -58,7 +56,6 @@ public slots:
     void searchBooks();
     void searchCompleter();
     void addBook();
-    void confirmAddBook();
     void editBook();
     void confirmEditBook();
     void deleteBook();

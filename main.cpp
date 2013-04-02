@@ -3,6 +3,7 @@
 #include <QtCore>
 #include <QtSql/QtSql>
 #include <memory>
+#include "addbookwizard.h"
 
 //#define PATH_TO_DB "/home/srn/Documents/ils/ils/ils.sqlite"
 #define PATH_TO_DB "/home/srn/Documents/ils/ils.sqlite"
@@ -22,7 +23,8 @@ int main(int argc, char *argv[])
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE"); //  delete in destructor
     db.setDatabaseName(PATH_TO_DB);
-    qDebug() << db.databaseName();
+
+    // db.open() moot for sqlite  / remove
     if(db.open()){
         qDebug() << "db open";
     }else{
@@ -30,12 +32,6 @@ int main(int argc, char *argv[])
     }
 
 
-    QSqlQuery q("select * from books;");
-    if(q.exec()){
-        qDebug() << "quer done";
-    }else{
-        qDebug() << "query fail";
-    }
 
     unique_ptr<Welcome> w(new Welcome);
     unique_ptr<MainWindow> mw(new MainWindow);
@@ -53,6 +49,7 @@ int main(int argc, char *argv[])
     mw->show();
 
 
-    
+
+
     return app.exec();
 }
