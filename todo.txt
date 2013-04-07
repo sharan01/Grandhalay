@@ -1,1 +1,7 @@
 set scroll for add number in book wizad;
+
+student records past and present;
+
+implement fine system should show fine when returning bokk and total amount in student summary;
+
+send email sms when delayed;
