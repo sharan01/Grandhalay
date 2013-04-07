@@ -36,6 +36,7 @@ void Books::createWidgets()
     abw = new AddBookWizard(this);
 
     isbk = new IssueBook;
+    ibw = new IssueBookWizard(this);
     completer = new QCompleter(model);
 
 
@@ -213,8 +214,7 @@ void  Books::issueBook()
     isbk->authorI->setText(record.field("author").value().toString());
     isbk->copiesLeftI->setText(record.field("copies").value().toString());
 
-
-    isbk->exec();
+    ibw->show();
 }
 void Books::confirmIssueBook()
 {

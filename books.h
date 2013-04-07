@@ -5,6 +5,7 @@
 #include <QtSql>
 #include "addbookwizard.h" /// includes qtwidgets
 #include "issuebook.h"
+#include "issuebookwizard.h"
 
 class Books : public QWidget
 {
@@ -38,6 +39,7 @@ private:
 
     AddBookWizard *abw;
     IssueBook *isbk;
+    IssueBookWizard *ibw;
 
     void createWidgets();
     void createLayout();
