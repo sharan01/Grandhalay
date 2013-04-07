@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    app.setApplicationName("Aurora's Integrates Library System");
+    app.setApplicationName("Aurora's Integrated Library System");
     QIcon ico;
     ico.addFile("icon.png");
     app.setWindowIcon(ico);

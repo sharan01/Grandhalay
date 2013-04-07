@@ -11,10 +11,10 @@ Members::Members(QWidget *parent) :
 
 void Members::createModels()
 {
-    model = new QSqlRelationalTableModel;
-    proxyModel = new QSortFilterProxyModel;
+    model = new QSqlRelationalTableModel(this);
+    proxyModel = new QSortFilterProxyModel(this);
 
-    model->setTable("students");
+    model->setTable("members");
     model->select();
     proxyModel->setSourceModel(model);
 }
@@ -24,7 +24,12 @@ void Members::createWidgets()
     branchSelector = new QComboBox;
     addMemberButton = new QPushButton("Add Sudent");
     searchBar = new QLineEdit;
+    searchRadioRoll = new QRadioButton("Roll Number");
+    searchRadioName = new QRadioButton("Name");
+    searchButton = new QPushButton("search");
     membersTable = new QTableView;
+
+    amw = new AddMemberWizard(this);
 
     membersTable->setModel(model);
     branchSelector->addItem("ALL");
@@ -35,17 +40,26 @@ void Members::createWidgets()
     branchSelector->addItem("IT");
     branchSelector->addItem("MECH");
     branchSelector->addItem("M.Tech");
+    branchSelector->addItem("Faculty");
 
-    searchBar->setPlaceholderText("Roll Numbers");
+    searchRadioName->setChecked(true);
+
 }
 void Members::createLayout()
 {
+    searchLayout = new QGridLayout;
     memberTopLayout = new QHBoxLayout;
     memberLayout = new QVBoxLayout;
 
+    searchLayout->addWidget(searchBar,0,0,1,3);
+    searchLayout->addWidget(searchRadioRoll,1,0,1,1);
+    searchLayout->addWidget(searchRadioName,1,1,1,1);
+    searchLayout->addWidget(searchButton,1,2,1,1);
+
     memberTopLayout->addWidget(branchSelector);
     memberTopLayout->addWidget(addMemberButton);
-    memberTopLayout->addWidget(searchBar);
+    memberTopLayout->addWidget(new QWidget,100);
+    memberTopLayout->addLayout(searchLayout);
 
     memberLayout->addLayout(memberTopLayout);
     memberLayout->addWidget(membersTable);
@@ -55,7 +69,12 @@ void Members::createLayout()
 void Members::createConnections()
 {
     QObject::connect(branchSelector,SIGNAL(activated(QString)),this,SLOT(filterMembers(QString)));
-    QObject::connect(searchBar,SIGNAL(textChanged(QString)),this,SLOT(searchMembers(QString)));
+    QObject::connect(addMemberButton,SIGNAL(clicked()),this,SLOT(addMember()));
+
+    QObject::connect(this->searchBar,SIGNAL(returnPressed()),this,SLOT(searchMembers()));
+    QObject::connect(this->searchButton,SIGNAL(clicked()),this,SLOT(searchMembers()));
+
+    QObject::connect(amw,SIGNAL(accepted()),this->model,SLOT(select()));
 }
 
 
@@ -66,12 +85,24 @@ void Members::filterMembers(QString s)
 {
     if(s=="ALL"){
         model->setFilter("");
+
     }else{
         model->setFilter("branch='" +s+ "'");
     }
 }
 
-void Members::searchMembers(QString s)
+void Members::searchMembers()
 {
-    model->setFilter("rollNo LIKE'%"+s+"%'");
+    QString s = searchBar->text();
+    if(searchRadioRoll->isChecked()){
+        model->setFilter("roll LIKE '%"+s+"%'");
+    }
+    if(searchRadioName->isChecked()){
+        model->setFilter("name LIKE '%"+s+"%'");
+    }
+}
+void Members::addMember()
+{
+    amw->show();
+    model->select();
 }

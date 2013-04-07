@@ -8,17 +8,19 @@ AddBookWizard::AddBookWizard(QWidget *parent) :
 {
     this->addPage(new DetailsPage);
     this->addPage(new FinalPage);
+    setModal(true);
+    //this->setMaximumHeight(300);
+    setFixedHeight(300);
+    QWizard::button(QWizard::BackButton)->hide();
+
 }
 void AddBookWizard::accept()
 {
-    QString branches[6]={"COMMON","CIVIL","CSE","ECE","EEE","MECH"};
-    qDebug() << field("book1").toString();
+    QString branches[7]={"COMMON","CIVIL","CSE","ECE","EEE","IT","MECH"};
 
     int cp = field("copies").toInt();
 
-    for(int i=0; i<cp; i++){
-        qDebug() << field("book" + QString::number(i+1)).toString();
-    }
+
     QString isbni = field("isbn").toString();
     QString ti = field("title").toString();
     QString ai = field("author").toString();
@@ -31,9 +33,19 @@ void AddBookWizard::accept()
     qDebug() << qr;
     QSqlQuery  q(qr);
 
-    QDialog::accept();
-    this->restart();
+    for(int i=0; i<cp; i++){
+        //qDebug() << field("book" + QString::number(i+1)).toString();
 
+        QString qqr = "insert into bookNumbers values('" + isbni + "'," + field("book" + QString::number(i+1)).toString()  +")";
+        qDebug() << qqr;
+        QSqlQuery qq(qqr);
+
+    }
+
+
+    QDialog::accept();
+    this->cleanupPage(0);
+    this->cleanupPage(1);
 }
 
 // ========================= detail class ========================== //
@@ -46,6 +58,7 @@ DetailsPage::DetailsPage(QWidget *parent)
     createLayouts();
     createConnections();
     registerFields();
+
 }
 void DetailsPage::createWidgets()
 {
@@ -73,6 +86,7 @@ void DetailsPage::createWidgets()
     branchSelector->addItem("CSE");
     branchSelector->addItem("ECE");
     branchSelector->addItem("EEE");
+    branchSelector->addItem("IT");
     branchSelector->addItem("MECH");
 
 }
@@ -96,12 +110,15 @@ void DetailsPage::createLayouts()
     layout->addWidget(copiesLabel,6,0);
     layout->addWidget(copiesEdit,6,1);
 
+
     this->setLayout(layout);
 }
 void DetailsPage::createConnections()
 {
     QObject::connect(this->fetchInfo,SIGNAL(clicked()),this,SLOT(getBookInfoOnline()));
     //QObject::connect(bookInfoOnline,SIGNAL(dataFetched(QByteArray d)),this,SLOT(getBookInfoOnline()));
+    QObject::connect(&bookInfoOnline,SIGNAL(infoFetched()),this,SLOT(processInfo()));
+
 }
 void DetailsPage::registerFields()
 {
@@ -119,7 +136,21 @@ void DetailsPage::getBookInfoOnline()
 {
     qDebug() << "but pressed and isbn ";
     QString isbn = this->ISBNEdit->text();
-    qDebug() << bookInfoOnline.fetchBookInfo(isbn);
+    bookInfoOnline.fetchBookInfo(isbn);
+}
+void DetailsPage::processInfo()
+{
+    std::vector<QString> vec;
+    vec.clear();
+    vec = bookInfoOnline.getInfo();
+    for(auto e: vec){
+        qDebug() << e;
+    }
+
+    titleEdit->setText(vec[0]);
+    authorEdit->setText(vec[1]);
+    publisherEdit->setText(vec[2]);
+    publishedDateEdit->setText(vec[3]);
 }
 
 // ============================ final page ========================== //
@@ -136,11 +167,14 @@ FinalPage::FinalPage(QWidget *parent)
 }
 void FinalPage::initializePage()
 {
+    //clear when back button is pressed for book numbers
+    bookNoEdits.clear();
     int copies = field("copies").toInt();
 
 
-    for(int i=0; i<copies; i++){
-        bookNoEdits.push_back(new QLineEdit);
+    bookNoEdits.resize(copies);
+    for(auto &e : bookNoEdits){
+        e = new QLineEdit;
     }
     for(int i=0; i<bookNoEdits.size();i++){
         layout->addWidget(new QLabel("Book Number " + QString::number(i+1)),i,0);

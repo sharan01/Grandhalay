@@ -1,0 +1,1 @@
+set scroll for add number in book wizad;

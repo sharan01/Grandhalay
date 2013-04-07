@@ -109,6 +109,8 @@ void Books::createConnections()
 
     QObject::connect(isbk->issueButton,SIGNAL(clicked()),SLOT(confirmIssueBook()));
     QObject::connect(isbk->studentsTable,SIGNAL(clicked(QModelIndex)),this,SLOT(enablebut()));
+
+    QObject::connect(abw,SIGNAL(accepted()),model,SLOT(select()));
 }
 
 void Books::filterBooks(QString s)

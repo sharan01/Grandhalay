@@ -31,6 +31,7 @@ public:
     DetailsPage(QWidget *parent = 0);
 public slots:
      void getBookInfoOnline();
+     void processInfo();
 
 private:
     QLabel *ISBNLabel;

@@ -3,19 +3,22 @@
 
 #include <QtWidgets>
 #include <QtSql>
+#include "addmemberwizard.h"
 
 class Members : public QWidget
 {
     Q_OBJECT
 private:
-    QHBoxLayout *memberTopLayout;
-    QVBoxLayout *memberLayout;
+
 
 
     //top widgets
     QComboBox *branchSelector;
     QPushButton *addMemberButton;
     QLineEdit *searchBar;
+    QRadioButton *searchRadioRoll;
+    QRadioButton *searchRadioName;
+    QPushButton *searchButton;
 
     QTableView *membersTable;
 
@@ -29,6 +32,11 @@ private:
     QAction *returBookAction;
     QAction *viewSummaryAction;
 
+    AddMemberWizard *amw;
+
+    QGridLayout *searchLayout;
+    QHBoxLayout *memberTopLayout;
+    QVBoxLayout *memberLayout;
 
     void createModels();
     void createWidgets();
@@ -46,8 +54,8 @@ signals:
 public slots:
 
     void filterMembers(QString);
-    void searchMembers(QString s);
- //   void addMember();
+    void searchMembers();
+    void addMember();
    // void editMember();
     //void deleteMember();
 

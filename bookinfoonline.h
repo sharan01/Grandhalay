@@ -6,6 +6,9 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
 #include <QDebug>
 #include <vector>
 class BookInfoOnline : public QObject
@@ -17,12 +20,16 @@ private:
     QNetworkReply* reply;
     QUrl url;
     QByteArray data;
-    std::vector<QString> processJson(QByteArray d);
+    std::vector<QString> vec;
+
+    void processJson(QString d);
+
 public:
     explicit BookInfoOnline();
     void fetchBookInfo(QString isbn);
+     std::vector<QString> getInfo();
 signals:
-    void dataFetched(QByteArray d);
+    void infoFetched();
 public slots:
     void finishedSlot(QNetworkReply* reply);
 };

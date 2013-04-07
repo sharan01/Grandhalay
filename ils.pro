@@ -50,3 +50,18 @@ HEADERS += \
 
 SOURCES += \
     bookinfoonline.cpp
+
+HEADERS += \
+    addmemberwizard.h
+
+SOURCES += \
+    addmemberwizard.cpp
+
+OTHER_FILES += \
+    todo.txt
+
+HEADERS += \
+    issuebookwizard.h
+
+SOURCES += \
+    issuebookwizard.cpp
