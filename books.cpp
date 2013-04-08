@@ -205,14 +205,10 @@ void  Books::issueBook()
     QItemSelectionModel *select = booksTable->selectionModel();
     QModelIndex i = select->currentIndex();
     QSqlRecord record = model->record(i.row());
-    isbk->bookID = record.field("id").value().toInt();
-    qDebug() << isbk->bookID;
+    QString isbn = record.field("ISBN").value().toString();
 
-
-    isbk->bookNoI->setText(record.field("number").value().toString());
-    isbk->titleI->setText(record.field("title").value().toString());
-    isbk->authorI->setText(record.field("author").value().toString());
-    isbk->copiesLeftI->setText(record.field("copies").value().toString());
+    ibw->sbn->setISBN(isbn);
+    qDebug() << isbn;
 
     ibw->show();
 }

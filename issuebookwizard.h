@@ -4,12 +4,14 @@
 #include <QWizard>
 #include <QtWidgets>
 #include <QtSql>
+class SelectBookNumber;
 class IssueBookWizard : public QWizard
 {
     Q_OBJECT
 public:
     explicit IssueBookWizard(QWidget *parent = 0);
     void accept();
+    SelectBookNumber *sbn;
     
 signals:
     
@@ -26,7 +28,7 @@ private:
     QString ISBN; // or book id
 
     QLabel *selectCopyLabel;
-    QListView *copyNumbers;
+    QTableView *copyNumbers;
 
     QVBoxLayout *layout;
 
@@ -79,6 +81,10 @@ public:
 
 
     explicit IssueBookPage();
+    void createModels();
+    void createWidgets();
+    void createLayout();
+    void createConnections();
 
 signals:
 

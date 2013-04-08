@@ -3,40 +3,53 @@
 IssueBookWizard::IssueBookWizard(QWidget *parent) :
     QWizard(parent)
 {
-    addPage(new SelectBookNumber);
+    sbn = new SelectBookNumber(this);
+    addPage(sbn);
     addPage(new IssueBookPage);
-
+    setButtonText(QWizard::FinishButton,"Issue Book");
     accept();
+
 }
 
 void IssueBookWizard::accept()
 {
     QDialog::accept();
+    qDebug () << field("qq");
+
+    this->restart();
 }
+
  // ========= select book number page =============//
 
 SelectBookNumber::SelectBookNumber(QWidget *parent) :
     QWizardPage(parent)
 {
     selectCopyLabel = new QLabel("Select from Available Copies");
-    copyNumbers = new QListView;
+    copyNumbers = new QTableView;
     layout = new QVBoxLayout;
 
     model = new QSqlRelationalTableModel;
 
     layout->addWidget(selectCopyLabel);
     layout->addWidget(copyNumbers);
+
     setLayout(layout);
+    copyNumbers->setMaximumSize(120,500);
 
     model->setTable("bookNumbers");
     model->select();
     copyNumbers->setModel(model);
-    //copyNumbers->setModelColumn(1);
+    copyNumbers->setColumnHidden(0,true);
+
+
+    registerField("qq",copyNumbers);
 }
 void SelectBookNumber::setISBN(QString s)
 {
     ISBN = s;
-    //model->setFilter("");
+    model->setFilter("ISBN='"+s +"'");
+
+
 }
 
 
@@ -46,6 +59,49 @@ IssueBookPage::IssueBookPage()
 
 {
     qDebug() << "issuebookpage constructed";
+    createModels();
+    createWidgets();
+
+    issueButton = new QPushButton("issue book");
+    // temp
+    issueButton->setDisabled(true);
+
+
+
+
+    bookNoI->setDisabled(true);
+    titleI->setDisabled(true);
+    authorI->setDisabled(true);
+    copiesLeftI->setDisabled(true);
+    returnDateI->setDate(QDate::currentDate());
+    searchBar->setPlaceholderText("search");
+
+
+    studentsTable->setModel(model);
+    studentsTable->setColumnHidden(1,true);
+    studentsTable->setSortingEnabled(true);
+    studentsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+
+
+
+
+
+
+
+
+    QObject::connect(this->searchBar,SIGNAL(textChanged(QString)),this,SLOT(searchStudent(QString)));
+}
+
+void IssueBookPage::createModels()
+{
+    model = new QSqlRelationalTableModel;
+    model->setTable("students");
+    model->select();
+
+}
+void IssueBookPage::createWidgets()
+{
     bookNo = new QLabel("ISBN");
     title = new QLabel("Title");
     author = new QLabel("Author");
@@ -62,42 +118,21 @@ IssueBookPage::IssueBookPage()
 
 
     studentsTable = new QTableView;
-    model = new QSqlRelationalTableModel;
+
 
 
 
     returnDate = new QLabel("Return Date");
     returnDateI = new QDateEdit();
 
-    issueButton = new QPushButton("issue book");
-    // temp
-    issueButton->setDisabled(true);
-
-
+}
+void IssueBookPage::createLayout()
+{
     bookInfoLayout = new QGridLayout;
     issueLayout = new QVBoxLayout;
     tableLayout = new QHBoxLayout;
 
     mainLayout = new QVBoxLayout;
-
-    bookNoI->setDisabled(true);
-    titleI->setDisabled(true);
-    authorI->setDisabled(true);
-    copiesLeftI->setDisabled(true);
-    returnDateI->setDate(QDate::currentDate());
-    searchBar->setPlaceholderText("search");
-    model->setTable("students");
-    model->select();
-
-    studentsTable->setModel(model);
-    studentsTable->setColumnHidden(0,true);
-    studentsTable->setSortingEnabled(true);
-    studentsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-
-
-
-
-
     bookInfoLayout->addWidget(bookNo,0,0,1,1);
     bookInfoLayout->addWidget(bookNoI,0,1,1,1);
     bookInfoLayout->addWidget(title,0,2,1,1);
@@ -111,7 +146,6 @@ IssueBookPage::IssueBookPage()
 
     issueLayout->addWidget(returnDate,0,Qt::AlignBottom);
     issueLayout->addWidget(returnDateI);
-    issueLayout->addWidget(issueButton);
 
     tableLayout->addWidget(studentsTable);
     tableLayout->addLayout(issueLayout);
@@ -120,12 +154,10 @@ IssueBookPage::IssueBookPage()
     mainLayout->addLayout(tableLayout);
 
     this->setLayout(mainLayout);
-
-
-
-    QObject::connect(this->searchBar,SIGNAL(textChanged(QString)),this,SLOT(searchStudent(QString)));
 }
+
 void IssueBookPage::searchStudent(QString s)
 {
     model->setFilter("rollNo LIKE '%"+s+"%'");
+    qDebug() << "rollNo LIKE '%"+s+"%'";
 }
