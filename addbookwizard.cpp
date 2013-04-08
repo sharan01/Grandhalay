@@ -10,8 +10,8 @@ AddBookWizard::AddBookWizard(QWidget *parent) :
     this->addPage(new FinalPage);
     setModal(true);
     //this->setMaximumHeight(300);
-    setFixedHeight(300);
     QWizard::button(QWizard::BackButton)->hide();
+   // QWizard::DisabledBackButtonOnLastPage;
 
 }
 void AddBookWizard::accept()
@@ -28,8 +28,8 @@ void AddBookWizard::accept()
     QString pubdi = field("publishedDate").toString();
     QString ci = field("copies").toString();
     QString bi = branches[field("branch").toInt()];
-    //db stuff
-    QString qr = QString("INSERT INTO books(title,author,copies,branch) VALUES('%1','%2','%3','%4')").arg(ti,ai,ci,bi);
+    //db stuffbooks(title,author,copies,branch)
+    QString qr = QString("INSERT INTO books(ISBN, Title, Author, Publisher, PublishedDate, Branch, copies) VALUES('%1','%2','%3','%4','%5','%6','%7')").arg(isbni,ti,ai,pubi,pubdi,bi,ci);
     qDebug() << qr;
     QSqlQuery  q(qr);
 
@@ -46,6 +46,8 @@ void AddBookWizard::accept()
     QDialog::accept();
     this->cleanupPage(0);
     this->cleanupPage(1);
+    this->close();
+    this->restart();
 }
 
 // ========================= detail class ========================== //
@@ -53,6 +55,8 @@ void AddBookWizard::accept()
 DetailsPage::DetailsPage(QWidget *parent)
     : QWizardPage(parent)
 {
+    numRegex.setPattern("[0-9]+");
+    numValidator = new QRegExpValidator(numRegex,this);
     this->setTitle("ADD Book");
     createWidgets();
     createLayouts();
@@ -62,6 +66,8 @@ DetailsPage::DetailsPage(QWidget *parent)
 }
 void DetailsPage::createWidgets()
 {
+    numRegex.setPattern("[0-9]+");
+    numValidator->setRegExp(numRegex);
     ISBNLabel = new QLabel("ISBN");
     titleLabel = new QLabel("Title");
     authorLabel = new QLabel("Author");
@@ -80,6 +86,9 @@ void DetailsPage::createWidgets()
     branchSelector = new QComboBox;
 
     fetchInfo = new QPushButton("Fetch info from Online");
+
+    ISBNEdit->setValidator(numValidator);
+    copiesEdit->setValidator(numValidator);
 
     branchSelector->addItem("COMMON");
     branchSelector->addItem("CIVIL");
@@ -141,6 +150,7 @@ void DetailsPage::getBookInfoOnline()
 void DetailsPage::processInfo()
 {
     std::vector<QString> vec;
+
     vec.clear();
     vec = bookInfoOnline.getInfo();
     for(auto e: vec){
@@ -158,6 +168,8 @@ void DetailsPage::processInfo()
 FinalPage::FinalPage(QWidget *parent)
     : QWizardPage(parent)
 {
+    numRegex.setPattern("[0-9]+");
+    numValidator = new QRegExpValidator(numRegex,this);
     setTitle("add book numbers");
    // qDebug() << field("copies").toInt();
     layout = new QGridLayout;
@@ -175,10 +187,13 @@ void FinalPage::initializePage()
     bookNoEdits.resize(copies);
     for(auto &e : bookNoEdits){
         e = new QLineEdit;
+        e->setValidator(numValidator);
     }
+
     for(int i=0; i<bookNoEdits.size();i++){
         layout->addWidget(new QLabel("Book Number " + QString::number(i+1)),i,0);
         layout->addWidget(bookNoEdits[i],i,1);
+
 
         registerField("book" + QString::number(i+1),bookNoEdits[i]);
     }

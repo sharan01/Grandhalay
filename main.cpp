@@ -5,8 +5,8 @@
 #include <memory>
 #include "addbookwizard.h"
 
-//#define PATH_TO_DB "/home/srn/Documents/ils/ils/ils.sqlite"
-#define PATH_TO_DB "/home/srn/Documents/ils/ils.sqlite"
+#define PATH_TO_DB "/home/srn/Desktop/library/ils/ils.sqlite"
+//#define PATH_TO_DB "/home/srn/Documents/ils/ils.sqlite"
 
 
 using namespace std;
@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
 
 
 
-    unique_ptr<Welcome> w(new Welcome);
-    unique_ptr<MainWindow> mw(new MainWindow);
+    Welcome *w = new Welcome;
+    MainWindow *mw = new MainWindow;
     //MainWindow *mw = new MainWindow;
 
     /*
@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
 
     */
     mw->show();
+    //mw->showMaximized();
+    //mw
 
 
 

@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <QWizard>
+#include <QRegExp>
+#include <QRegExpValidator>
 #include <QtWidgets>
 #include "bookinfoonline.h"
 
@@ -34,6 +36,8 @@ public slots:
      void processInfo();
 
 private:
+    QRegExp numRegex;
+    QRegExpValidator *numValidator;
     QLabel *ISBNLabel;
     QLabel *titleLabel;
     QLabel *authorLabel;
@@ -78,6 +82,8 @@ public:
 public slots:
 
 private:
+    QRegExp numRegex;
+    QRegExpValidator *numValidator;
     std::vector<QLineEdit *> bookNoEdits;
     QGridLayout *layout;
 

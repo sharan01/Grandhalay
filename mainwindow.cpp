@@ -46,6 +46,7 @@ void MainWindow::createLayout()
     mainWidget->setLayout(mainLayout);
     mainWidget->show();
     mainWidget->setMinimumSize(700,500);
+    //mainWidget->showMaximized();
 
 }
 void MainWindow::createConnections()

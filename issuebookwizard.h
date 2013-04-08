@@ -46,11 +46,44 @@ class IssueBookPage : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit IssueBookPage(QWidget *parent=0);
+    int bookID;
+    QLabel *bookNo;
+    QLabel *title;
+    QLabel *author;
+    QLabel *copiesLeft;
+    QLabel *roll;
+
+    QLineEdit *bookNoI;
+    QLineEdit *titleI;
+    QLineEdit *authorI;
+    QLineEdit *copiesLeftI;
+
+    QLineEdit *searchBar;
+
+    QTableView *studentsTable;
+    QSqlRelationalTableModel *model;
+
+
+    QLabel *returnDate;
+    QDateEdit *returnDateI;
+
+    QPushButton *issueButton;
+
+
+    QGridLayout *bookInfoLayout;
+
+    QVBoxLayout *issueLayout;
+    QHBoxLayout *tableLayout;
+
+    QVBoxLayout  *mainLayout;
+
+
+    explicit IssueBookPage();
 
 signals:
 
 public slots:
+    void searchStudent(QString s);
 
 };
 

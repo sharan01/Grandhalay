@@ -10,7 +10,7 @@ AddMemberWizard::AddMemberWizard(QWidget *parent) :
 }
 void AddMemberWizard::accept()
 {
-    QString branches[7]={"COMMON","CIVIL","CSE","ECE","EEE","IT","MECH"};
+    QString branches[7]={"CIVIL","CSE","ECE","EEE","IT","MECH","M.Tech"};
 
     QString roll = field("roll").toString();
     QString name = field("name").toString();
@@ -51,13 +51,14 @@ void MembersPage::createWidgets()
     phoneEdit = new QLineEdit;
     emailEdit = new QLineEdit;
 
-    branchSelector->addItem("COMMON");
+
     branchSelector->addItem("CIVIL");
     branchSelector->addItem("CSE");
     branchSelector->addItem("ECE");
     branchSelector->addItem("EEE");
     branchSelector->addItem("IT");
     branchSelector->addItem("MECH");
+    branchSelector->addItem("M.Tech");
 }
 void MembersPage::createLayout()
 {
