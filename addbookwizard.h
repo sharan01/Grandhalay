@@ -5,7 +5,7 @@
 #include <QWizard>
 #include <QRegExp>
 #include <QRegExpValidator>
-#include <QtWidgets>
+#include <QtGui>
 #include "bookinfoonline.h"
 
 class AddBookWizard : public QWizard
