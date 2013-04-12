@@ -5,24 +5,12 @@
 #include <QWizard>
 #include <QRegExp>
 #include <QRegExpValidator>
-#include <QtGui>
+#include <QtWidgets>
 #include "bookinfoonline.h"
 
-class AddBookWizard : public QWizard
-{
-    Q_OBJECT
-public:
-    explicit AddBookWizard(QWidget *parent = 0);
+//class DetailsPage;
+//class FinalPage;
 
-    void accept();
-    
-signals:
-    
-public slots:
-
-
-
-};
 
 // first page
 class DetailsPage : public QWizardPage
@@ -37,28 +25,28 @@ public slots:
 
 private:
     QRegExp numRegex;
-    QRegExpValidator *numValidator;
-    QLabel *ISBNLabel;
-    QLabel *titleLabel;
-    QLabel *authorLabel;
-    QLabel *publisherLabel;
-    QLabel *publishedDateLabel;
-    QLabel *branchLabel;
-    QLabel *copiesLabel;
+    QRegExpValidator numValidator;
+    QLabel ISBNLabel;
+    QLabel titleLabel;
+    QLabel authorLabel;
+    QLabel publisherLabel;
+    QLabel publishedDateLabel;
+    QLabel branchLabel;
+    QLabel copiesLabel;
 
-    QLineEdit *ISBNEdit;
-    QLineEdit *titleEdit;
-    QLineEdit *authorEdit;
-    QLineEdit *publisherEdit;
-    QLineEdit *publishedDateEdit;
+    QLineEdit ISBNEdit;
+    QLineEdit titleEdit;
+    QLineEdit authorEdit;
+    QLineEdit publisherEdit;
+    QLineEdit publishedDateEdit;
     //branch combo box
-    QLineEdit *copiesEdit;
+    QLineEdit copiesEdit;
 
-    QComboBox *branchSelector;
+    QComboBox branchSelector;
 
-    QPushButton *fetchInfo;
+    QPushButton fetchInfo;
 
-    QGridLayout *layout;
+    QGridLayout layout;
 
     BookInfoOnline bookInfoOnline;
 
@@ -76,6 +64,7 @@ class FinalPage : public QWizardPage
     Q_OBJECT
 public:
     FinalPage(QWidget *parent = 0);
+    ~FinalPage();
 
     void initializePage();
 
@@ -83,9 +72,31 @@ public slots:
 
 private:
     QRegExp numRegex;
-    QRegExpValidator *numValidator;
+    QRegExpValidator numValidator;
     std::vector<QLineEdit *> bookNoEdits;
-    QGridLayout *layout;
+    std::vector<QLabel *> bookNoLabels;
+    QGridLayout layout;
+
+};
+
+// main qwizard ===========================================
+
+
+class AddBookWizard : public QWizard
+{
+    Q_OBJECT
+public:
+    explicit AddBookWizard(QWidget *parent = 0);
+    ~AddBookWizard();
+
+    void accept();
+    DetailsPage dp;
+    FinalPage fp;
+signals:
+
+public slots:
+
+
 
 };
 

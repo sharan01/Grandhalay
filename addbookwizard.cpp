@@ -6,14 +6,19 @@
 AddBookWizard::AddBookWizard(QWidget *parent) :
     QWizard(parent)
 {
-    this->addPage(new DetailsPage);
-    this->addPage(new FinalPage);
+    qDebug() << "Add Book Wizard constructed";
+    addPage(&dp);
+    addPage(&fp);
     setModal(true);
-    //this->setMaximumHeight(300);
-    QWizard::button(QWizard::BackButton)->hide();
-   // QWizard::DisabledBackButtonOnLastPage;
+
 
 }
+AddBookWizard::~AddBookWizard()
+{
+    qDebug() << "Add Book Wizard destructed";
+}
+
+
 void AddBookWizard::accept()
 {
     QString branches[7]={"COMMON","CIVIL","CSE","ECE","EEE","IT","MECH"};
@@ -56,7 +61,7 @@ DetailsPage::DetailsPage(QWidget *parent)
     : QWizardPage(parent)
 {
     numRegex.setPattern("[0-9]+");
-    numValidator = new QRegExpValidator(numRegex,this);
+    numValidator.setRegExp(numRegex);
     this->setTitle("ADD Book");
     createWidgets();
     createLayouts();
@@ -66,85 +71,75 @@ DetailsPage::DetailsPage(QWidget *parent)
 }
 void DetailsPage::createWidgets()
 {
-    numRegex.setPattern("[0-9]+");
-    numValidator->setRegExp(numRegex);
-    ISBNLabel = new QLabel("ISBN");
-    titleLabel = new QLabel("Title");
-    authorLabel = new QLabel("Author");
-    publisherLabel = new QLabel("Publisher");
-    publishedDateLabel = new QLabel("published Date");
-    branchLabel = new QLabel("Branch");
-    copiesLabel = new QLabel("Copies");
 
-    ISBNEdit = new QLineEdit;
-    titleEdit = new QLineEdit;
-    authorEdit = new QLineEdit;
-    publisherEdit = new QLineEdit;
-    publishedDateEdit = new QLineEdit;
-    copiesEdit = new QLineEdit;
+    ISBNLabel.setText("ISBN");
+    titleLabel.setText("Title");
+    authorLabel.setText("Author");
+    publisherLabel.setText("Publisher");
+    publishedDateLabel.setText("Publisher Date");
+    branchLabel.setText("Branch");
+    copiesLabel.setText("Copies");
 
-    branchSelector = new QComboBox;
+    fetchInfo.setText("Fetch Info from online");
 
-    fetchInfo = new QPushButton("Fetch info from Online");
+    ISBNEdit.setValidator(&numValidator);
+    copiesEdit.setValidator(&numValidator);
 
-    ISBNEdit->setValidator(numValidator);
-    copiesEdit->setValidator(numValidator);
-
-    branchSelector->addItem("COMMON");
-    branchSelector->addItem("CIVIL");
-    branchSelector->addItem("CSE");
-    branchSelector->addItem("ECE");
-    branchSelector->addItem("EEE");
-    branchSelector->addItem("IT");
-    branchSelector->addItem("MECH");
+    branchSelector.addItem("COMMON");
+    branchSelector.addItem("CIVIL");
+    branchSelector.addItem("CSE");
+    branchSelector.addItem("ECE");
+    branchSelector.addItem("EEE");
+    branchSelector.addItem("IT");
+    branchSelector.addItem("MECH");
 
 }
 void DetailsPage::createLayouts()
 {
-    layout = new QGridLayout;
-
-    layout->addWidget(ISBNLabel,0,0);
-    layout->addWidget(ISBNEdit,0,1);
-    layout->addWidget(fetchInfo,0,2);
-    layout->addWidget(titleLabel,1,0);
-    layout->addWidget(titleEdit,1,1);
-    layout->addWidget(authorLabel,2,0);
-    layout->addWidget(authorEdit,2,1);
-    layout->addWidget(publisherLabel,3,0);
-    layout->addWidget(publisherEdit,3,1);
-    layout->addWidget(publishedDateLabel,4,0);
-    layout->addWidget(publishedDateEdit,4,1);
-    layout->addWidget(branchLabel,5,0);
-    layout->addWidget(branchSelector,5,1);
-    layout->addWidget(copiesLabel,6,0);
-    layout->addWidget(copiesEdit,6,1);
 
 
-    this->setLayout(layout);
+    layout.addWidget(&ISBNLabel,0,0);
+    layout.addWidget(&ISBNEdit,0,1);
+    layout.addWidget(&fetchInfo,0,2);
+    layout.addWidget(&titleLabel,1,0);
+    layout.addWidget(&titleEdit,1,1);
+    layout.addWidget(&authorLabel,2,0);
+    layout.addWidget(&authorEdit,2,1);
+    layout.addWidget(&publisherLabel,3,0);
+    layout.addWidget(&publisherEdit,3,1);
+    layout.addWidget(&publishedDateLabel,4,0);
+    layout.addWidget(&publishedDateEdit,4,1);
+    layout.addWidget(&branchLabel,5,0);
+    layout.addWidget(&branchSelector,5,1);
+    layout.addWidget(&copiesLabel,6,0);
+    layout.addWidget(&copiesEdit,6,1);
+
+
+    this->setLayout(&layout);
 }
 void DetailsPage::createConnections()
 {
-    QObject::connect(this->fetchInfo,SIGNAL(clicked()),this,SLOT(getBookInfoOnline()));
+    QObject::connect(&fetchInfo,SIGNAL(clicked()),this,SLOT(getBookInfoOnline()));
     //QObject::connect(bookInfoOnline,SIGNAL(dataFetched(QByteArray d)),this,SLOT(getBookInfoOnline()));
     QObject::connect(&bookInfoOnline,SIGNAL(infoFetched()),this,SLOT(processInfo()));
 
 }
 void DetailsPage::registerFields()
 {
-    registerField("isbn*",ISBNEdit);
-    registerField("title*",titleEdit);
-    registerField("author*",authorEdit);
-    registerField("publisher*",publisherEdit);
-    registerField("publishedDate*",publishedDateEdit);
-    registerField("branch",branchSelector);
-    registerField("copies*",copiesEdit);
+    registerField("isbn*",&ISBNEdit);
+    registerField("title*",&titleEdit);
+    registerField("author*",&authorEdit);
+    registerField("publisher*",&publisherEdit);
+    registerField("publishedDate*",&publishedDateEdit);
+    registerField("branch",&branchSelector);
+    registerField("copies*",&copiesEdit);
 }
 
 //slots
 void DetailsPage::getBookInfoOnline()
 {
     qDebug() << "but pressed and isbn ";
-    QString isbn = this->ISBNEdit->text();
+    QString isbn = ISBNEdit.text();
     bookInfoOnline.fetchBookInfo(isbn);
 }
 void DetailsPage::processInfo()
@@ -157,10 +152,10 @@ void DetailsPage::processInfo()
         qDebug() << e;
     }
 
-    titleEdit->setText(vec[0]);
-    authorEdit->setText(vec[1]);
-    publisherEdit->setText(vec[2]);
-    publishedDateEdit->setText(vec[3]);
+    titleEdit.setText(vec[0]);
+    authorEdit.setText(vec[1]);
+    publisherEdit.setText(vec[2]);
+    publishedDateEdit.setText(vec[3]);
 }
 
 // ============================ final page ========================== //
@@ -168,38 +163,43 @@ void DetailsPage::processInfo()
 FinalPage::FinalPage(QWidget *parent)
     : QWizardPage(parent)
 {
+    qDebug() << "Final Page constructed";
     numRegex.setPattern("[0-9]+");
-    numValidator = new QRegExpValidator(numRegex,this);
+    numValidator.setRegExp(numRegex);
     setTitle("add book numbers");
-   // qDebug() << field("copies").toInt();
-    layout = new QGridLayout;
-    this->setLayout(layout);
 
-
+    setLayout(&layout);
 }
+
+FinalPage::~FinalPage()
+{
+    qDebug() << "Final Page destructed";
+    for(auto &e: bookNoEdits){
+        delete e;
+    }
+    for(auto &e: bookNoLabels){
+        delete e;
+    }
+}
+
 void FinalPage::initializePage()
 {
-    //clear when back button is pressed for book numbers
-    bookNoEdits.clear();
     int copies = field("copies").toInt();
 
-
+    bookNoLabels.resize(copies);
     bookNoEdits.resize(copies);
-    for(auto &e : bookNoEdits){
-        e = new QLineEdit;
-        e->setValidator(numValidator);
-    }
 
-    for(int i=0; i<bookNoEdits.size();i++){
-        layout->addWidget(new QLabel("Book Number " + QString::number(i+1)),i,0);
-        layout->addWidget(bookNoEdits[i],i,1);
+    for(int i=0; i<copies; i++){
+        bookNoLabels[i] = new QLabel("Book Number " + QString::number(i+1));
+        bookNoEdits[i] = new QLineEdit;
+        bookNoEdits[i]->setValidator(&numValidator);
 
+        layout.addWidget(bookNoLabels[i],i,0);
+        layout.addWidget(bookNoEdits[i],i,1);
 
         registerField("book" + QString::number(i+1),bookNoEdits[i]);
+
     }
 
-
-
 }
-
 

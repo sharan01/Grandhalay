@@ -34,6 +34,8 @@ void Books::createWidgets()
     booksTable = new QTableView;
 
     abw = new AddBookWizard(this);
+    //abw = std::make_shared(new AddBookWizard);
+
 
     isbk = new IssueBook;
     ibw = new IssueBookWizard(this);
@@ -145,7 +147,10 @@ void Books::searchCompleter()
 
 void Books::addBook()
 {
+    AddBookWizard *aabbw = abw;
+    abw = new AddBookWizard(this);
     abw->show();
+    delete aabbw;
 
     model->select();
 

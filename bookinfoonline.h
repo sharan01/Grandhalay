@@ -26,6 +26,7 @@ private:
 
 public:
     explicit BookInfoOnline();
+    ~BookInfoOnline();
     void fetchBookInfo(QString isbn);
      std::vector<QString> getInfo();
 signals:

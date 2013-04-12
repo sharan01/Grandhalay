@@ -6,6 +6,7 @@
 #include "addbookwizard.h" /// includes qtwidgets
 #include "issuebook.h"
 #include "issuebookwizard.h"
+#include <memory>
 
 class Books : public QWidget
 {

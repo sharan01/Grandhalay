@@ -4,11 +4,19 @@ using namespace std;
 
 BookInfoOnline::BookInfoOnline()
 {
+    qDebug() << "book info online constructed";
     nam = new QNetworkAccessManager(this);
 
     QObject::connect(nam, SIGNAL(finished(QNetworkReply*)),this, SLOT(finishedSlot(QNetworkReply*)));
 
 }
+BookInfoOnline::~BookInfoOnline()
+{
+    qDebug() << "book info online destructed";
+    delete nam;
+    delete reply;
+}
+
 void BookInfoOnline::fetchBookInfo(QString isbn)
 {
     QString link = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
