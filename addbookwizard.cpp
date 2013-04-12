@@ -168,7 +168,15 @@ FinalPage::FinalPage(QWidget *parent)
     numValidator.setRegExp(numRegex);
     setTitle("add book numbers");
 
-    setLayout(&layout);
+    mainLayout.addWidget(&scrollArea);
+    setLayout(&mainLayout);
+
+    //this->setMaximumSize(300,300);
+
+    //scrollArea.setWidgetResizable(true);
+    scrollArea.setLayout(&layout);
+    //scrollArea.setMaximumHeight(300);
+
 }
 
 FinalPage::~FinalPage()
@@ -190,12 +198,13 @@ void FinalPage::initializePage()
     bookNoEdits.resize(copies);
 
     for(int i=0; i<copies; i++){
-        bookNoLabels[i] = new QLabel("Book Number " + QString::number(i+1));
-        bookNoEdits[i] = new QLineEdit;
+        bookNoLabels[i] = new QLabel("Book Number " + QString::number(i+1),&scrollArea);
+        bookNoEdits[i] = new QLineEdit(&scrollArea);
         bookNoEdits[i]->setValidator(&numValidator);
 
         layout.addWidget(bookNoLabels[i],i,0);
         layout.addWidget(bookNoEdits[i],i,1);
+
 
         registerField("book" + QString::number(i+1),bookNoEdits[i]);
 

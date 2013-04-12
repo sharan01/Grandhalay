@@ -44,6 +44,8 @@ private:
 
     QComboBox branchSelector;
 
+
+
     QPushButton fetchInfo;
 
     QGridLayout layout;
@@ -75,7 +77,11 @@ private:
     QRegExpValidator numValidator;
     std::vector<QLineEdit *> bookNoEdits;
     std::vector<QLabel *> bookNoLabels;
+
+    QScrollArea scrollArea;
+
     QGridLayout layout;
+    QVBoxLayout mainLayout;
 
 };
 
@@ -92,6 +98,9 @@ public:
     void accept();
     DetailsPage dp;
     FinalPage fp;
+
+
+
 signals:
 
 public slots:
