@@ -1,6 +1,6 @@
 #include "addbook.h"
 
-AddBook::AddBook(int a,QWidget *parent) :
+AddBook::AddBook(QWidget *parent) :
     QDialog(parent)
 {
     qDebug() << "add book constructed";
@@ -46,13 +46,8 @@ AddBook::AddBook(int a,QWidget *parent) :
 
 
     buttonLayout->addWidget(cancel);
-    // for add book or edit book widget
-    if(a==1){
-        buttonLayout->addWidget(ok);
-    }
-    else if(a==2){
-        buttonLayout->addWidget(edit);
-    }
+
+    buttonLayout->addWidget(ok);
 
     mainlayout->addWidget(info);
     mainlayout->addLayout(formLayout);

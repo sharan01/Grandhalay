@@ -147,10 +147,9 @@ void Books::searchCompleter()
 
 void Books::addBook()
 {
-    AddBookWizard *aabbw = abw;
+    std::unique_ptr<AddBookWizard> aabw(abw);
     abw = new AddBookWizard(this);
     abw->show();
-    delete aabbw;
 
     model->select();
 

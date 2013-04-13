@@ -10,9 +10,8 @@ AddBookWizard::AddBookWizard(QWidget *parent) :
     addPage(&dp);
     addPage(&fp);
     setModal(true);
-
-
 }
+
 AddBookWizard::~AddBookWizard()
 {
     qDebug() << "Add Book Wizard destructed";
@@ -164,23 +163,15 @@ FinalPage::FinalPage(QWidget *parent)
     : QWizardPage(parent)
 {
     qDebug() << "Final Page constructed";
-    numRegex.setPattern("[0-9]+");
-    numValidator.setRegExp(numRegex);
+    sfp = new subFinalPage(this);
     setTitle("add book numbers");
-
-    mainLayout.addWidget(&scrollArea);
-    setLayout(&mainLayout);
-
-    //this->setMaximumSize(300,300);
-
-    //scrollArea.setWidgetResizable(true);
-    scrollArea.setLayout(&layout);
-    //scrollArea.setMaximumHeight(300);
+    layout.addWidget(sfp);
+    setLayout(&layout);
 
 }
 
 FinalPage::~FinalPage()
-{
+{/*
     qDebug() << "Final Page destructed";
     for(auto &e: bookNoEdits){
         delete e;
@@ -188,27 +179,45 @@ FinalPage::~FinalPage()
     for(auto &e: bookNoLabels){
         delete e;
     }
+*/
 }
 
 void FinalPage::initializePage()
 {
+
     int copies = field("copies").toInt();
+    //
+    sfp->ip(copies);
+
+
+
+}
+subFinalPage::subFinalPage(QWidget *parent) :
+    QWidget(parent)
+{
+    numRegex.setPattern("[0-9]+");
+    numValidator.setRegExp(numRegex);
+
+
+
+}
+void subFinalPage::ip(int n)
+{
+    int copies = n;
 
     bookNoLabels.resize(copies);
     bookNoEdits.resize(copies);
 
     for(int i=0; i<copies; i++){
-        bookNoLabels[i] = new QLabel("Book Number " + QString::number(i+1),&scrollArea);
-        bookNoEdits[i] = new QLineEdit(&scrollArea);
+        bookNoLabels[i] = new QLabel("Book Number " + QString::number(i+1));
+        bookNoEdits[i] = new QLineEdit;
         bookNoEdits[i]->setValidator(&numValidator);
 
         layout.addWidget(bookNoLabels[i],i,0);
         layout.addWidget(bookNoEdits[i],i,1);
 
 
-        registerField("book" + QString::number(i+1),bookNoEdits[i]);
+        //registerField("book" + QString::number(i+1),bookNoEdits[i]);
 
     }
-
 }
-

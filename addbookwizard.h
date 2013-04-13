@@ -59,8 +59,23 @@ private:
     void registerFields();
 };
 
+// ================================================//
+class subFinalPage :public QWidget
+{
+    Q_OBJECT
+public:
+    subFinalPage(QWidget *parent = 0);
+    void ip(int);
+private:
+    QRegExp numRegex;
+    QRegExpValidator numValidator;
+    std::vector<QLineEdit *> bookNoEdits;
+    std::vector<QLabel *> bookNoLabels;
 
+    QGridLayout layout;
 
+};
+//-------------------------------------------------//
 class FinalPage : public QWizardPage
 {
     Q_OBJECT
@@ -73,17 +88,13 @@ public:
 public slots:
 
 private:
-    QRegExp numRegex;
-    QRegExpValidator numValidator;
-    std::vector<QLineEdit *> bookNoEdits;
-    std::vector<QLabel *> bookNoLabels;
+    subFinalPage *sfp;
 
-    QScrollArea scrollArea;
 
     QGridLayout layout;
-    QVBoxLayout mainLayout;
 
 };
+
 
 // main qwizard ===========================================
 
@@ -98,7 +109,6 @@ public:
     void accept();
     DetailsPage dp;
     FinalPage fp;
-
 
 
 signals:

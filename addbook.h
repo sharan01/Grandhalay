@@ -31,7 +31,7 @@ public:
     QFormLayout *formLayout;
     QHBoxLayout *buttonLayout;
 
-    explicit AddBook(int, QWidget *parent);
+    explicit AddBook(QWidget *parent=0);
     int currentID;
 
     
