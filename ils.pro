@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     addbook.cpp \
     issuebook.cpp \
     admin.cpp \
-    members.cpp
+    members.cpp \
+    editbookwizard.cpp
 
 HEADERS  += \
     welcome.h \
@@ -28,7 +29,8 @@ HEADERS  += \
     addbook.h \
     issuebook.h \
     admin.h \
-    members.h
+    members.h \
+    editbookwizard.h
 
 FORMS    +=
 

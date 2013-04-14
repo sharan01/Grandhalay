@@ -156,7 +156,15 @@ void Books::addBook()
 }
 
 void Books::editBook()
-{/*
+{
+    std::vector<QString> s;
+
+    EditBookWizard *eebw = ebw;
+    ebw = new EditBookWizard(s);
+    ebw->show();
+
+    delete eebw;
+    /*
     QItemSelectionModel *select = booksTable->selectionModel();
     QModelIndex i = select->currentIndex();
     QSqlRecord record = model->record(i.row());

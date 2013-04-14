@@ -6,6 +6,7 @@
 #include "addbookwizard.h" /// includes qtwidgets
 #include "issuebook.h"
 #include "issuebookwizard.h"
+#include "editbookwizard.h"
 #include <memory>
 
 class Books : public QWidget
@@ -39,6 +40,7 @@ private:
     QAction *viewSummaryAction;
 
     AddBookWizard *abw;
+    EditBookWizard *ebw;
     IssueBook *isbk;
     IssueBookWizard *ibw;
 
