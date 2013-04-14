@@ -159,27 +159,27 @@ void Books::editBook()
 {
     std::vector<QString> s;
 
-    EditBookWizard *eebw = ebw;
-    ebw = new EditBookWizard(s);
-    ebw->show();
-
-    delete eebw;
-    /*
     QItemSelectionModel *select = booksTable->selectionModel();
     QModelIndex i = select->currentIndex();
     QSqlRecord record = model->record(i.row());
-    QVariant ss = record.field("title").value().toString();
-    qDebug() << ss;
-    edbk->currentID = record.field("id").value().toInt();
-    edbk->bookNoInput->setText(record.field("number").value().toString());
-    edbk->titleInput->setText(record.field("title").value().toString());
-    edbk->authorInput->setText(record.field("author").value().toString());
-    edbk->copiesInput->setText(record.field("copies").value().toString());
-    edbk->priceInput->setText(record.field("price").value().toString());
-    edbk->branchInput->setCurrentIndex(edbk->branchInput->findText(record.field("branch").value().toString()));
 
-    edbk->exec();
-    */
+    s.push_back(record.field("bookID").value().toString());
+    s.push_back(record.field("ISBN").value().toString());
+    s.push_back(record.field("Title").value().toString());
+    s.push_back(record.field("Author").value().toString());
+    s.push_back(record.field("Publisher").value().toString());
+    s.push_back(record.field("PublishedDate").value().toString());
+    s.push_back(record.field("Branch").value().toString());
+
+
+    EditBookWizard *eebw = ebw;
+    ebw = new EditBookWizard(s,this);
+    ebw->show();
+
+    delete eebw;
+
+
+    model->select();
 }
 
 void Books::confirmEditBook()
