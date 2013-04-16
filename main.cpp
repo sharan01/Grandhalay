@@ -5,7 +5,7 @@
 #include <memory>
 #include "addbookwizard.h"
 
-//#define PATH_TO_DB "/home/srn/Desktop/ils/ils/ils.sqlite"
+//#//define PATH_TO_DB "/home/srn/Desktop/ils/ils/ils.sqlite"
 #define PATH_TO_DB "/home/srn/Documents/ils/ils.sqlite"
 
 
