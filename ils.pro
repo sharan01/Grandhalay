@@ -20,7 +20,7 @@ SOURCES += main.cpp \
     issuebook.cpp \
     admin.cpp \
     members.cpp \
-    editbookwizard.cpp \
+    wizards/editbookwizard.cpp \
     wizards/addcopywizard.cpp
 
 HEADERS  += \
@@ -31,7 +31,7 @@ HEADERS  += \
     issuebook.h \
     admin.h \
     members.h \
-    editbookwizard.h \
+    wizards/editbookwizard.h \
     wizards/addcopywizard.h
 
 FORMS    +=
@@ -42,31 +42,31 @@ RESOURCES += \
 QMAKE_CXXFLAGS += -std=c++11
 
 HEADERS += \
-    addbookwizard.h
+    wizards/addbookwizard.h
 
 SOURCES += \
-    addbookwizard.cpp
+    wizards/addbookwizard.cpp
 
 HEADERS += \
-    bookinfoonline.h
+    wizards/bookinfoonline.h
 
 SOURCES += \
-    bookinfoonline.cpp
+    wizards/bookinfoonline.cpp
 
 HEADERS += \
-    addmemberwizard.h
+    wizards/addmemberwizard.h
 
 SOURCES += \
-    addmemberwizard.cpp
+    wizards/addmemberwizard.cpp
 
 OTHER_FILES += \
     todo.txt
 
 HEADERS += \
-    issuebookwizard.h
+    wizards/issuebookwizard.h
 
 SOURCES += \
-    issuebookwizard.cpp
+    wizards/issuebookwizard.cpp
 
 HEADERS += \
     connectdb.h

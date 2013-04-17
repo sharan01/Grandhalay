@@ -3,7 +3,7 @@
 
 #include <QtWidgets>
 #include <QtSql>
-#include "addmemberwizard.h"
+#include "wizards/addmemberwizard.h"
 
 class Members : public QWidget
 {

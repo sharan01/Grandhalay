@@ -3,10 +3,10 @@
 
 
 #include <QtSql>
-#include "addbookwizard.h" /// includes qtwidgets
+#include "wizards/addbookwizard.h" /// includes qtwidgets
 #include "issuebook.h"
-#include "issuebookwizard.h"
-#include "editbookwizard.h"
+#include "wizards/issuebookwizard.h"
+#include "wizards/editbookwizard.h"
 #include <memory>
 
 class Books : public QWidget
