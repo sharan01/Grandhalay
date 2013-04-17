@@ -65,3 +65,9 @@ HEADERS += \
 
 SOURCES += \
     issuebookwizard.cpp
+
+HEADERS += \
+    connectdb.h
+
+SOURCES += \
+    connectdb.cpp
