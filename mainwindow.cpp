@@ -12,9 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 void MainWindow::createResources()
 {
-    bIcon.addFile(":/images/book.png");
-    sIcon.addFile(":/images/student.png");
-    aIcon.addFile(":/images/admin.png");
+    bIcon.addFile(":/res/images/book.png");
+    sIcon.addFile(":/res/images/student.png");
+    aIcon.addFile(":/res/images/admin.png");
     siz.setWidth(20);
     siz.setHeight(20);
 }

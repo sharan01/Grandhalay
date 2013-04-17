@@ -20,8 +20,8 @@ Welcome::Welcome(QWidget *parent) :
 }
 void Welcome::createResources()
 {
-    lg.load(":images/logo.png");
-    ico.load(":images/icon.png");
+    lg.load(":/res/images/logo.png");
+    ico.load(":/res/images/icon.png");
 }
 void Welcome::createWidgets()
 {

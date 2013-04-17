@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setApplicationName("Aurora's Integrated Library System");
     QIcon ico;
-    ico.addFile("icon.png");
+    ico.addFile(":/res/images/icon.png");
     app.setWindowIcon(ico);
 
 
