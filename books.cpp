@@ -67,6 +67,8 @@ void Books::createWidgets()
     booksTable->addAction(this->deleteBookAction);
     booksTable->addAction(this->issueBookAction);
     booksTable->addAction(this->viewSummaryAction);
+    booksTable->addAction(new QAction("Add Copy",this));
+    booksTable->addAction(new QAction("remove Copy",this));
 }
 
 void Books::createLayout()

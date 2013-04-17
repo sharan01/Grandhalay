@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     issuebook.cpp \
     admin.cpp \
     members.cpp \
-    editbookwizard.cpp
+    editbookwizard.cpp \
+    wizards/addcopywizard.cpp
 
 HEADERS  += \
     welcome.h \
@@ -30,7 +31,8 @@ HEADERS  += \
     issuebook.h \
     admin.h \
     members.h \
-    editbookwizard.h
+    editbookwizard.h \
+    wizards/addcopywizard.h
 
 FORMS    +=
 
