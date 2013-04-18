@@ -4,9 +4,11 @@
 
 #include <QtSql>
 #include "wizards/addbookwizard.h" /// includes qtwidgets
+#include "wizards/addcopywizard.h"
 #include "issuebook.h"
 #include "wizards/issuebookwizard.h"
 #include "wizards/editbookwizard.h"
+#
 #include <memory>
 
 class Books : public QWidget
@@ -34,12 +36,15 @@ private:
 
     QCompleter *completer;
 
+    QAction *addCopyAction;
+    QAction *removeCopyAction;
     QAction *editBookAction;
     QAction *deleteBookAction;
     QAction *issueBookAction;
     QAction *viewSummaryAction;
 
     AddBookWizard *abw;
+    AddCopyWizard *acw;
     EditBookWizard *ebw;
     IssueBook *isbk;
     IssueBookWizard *ibw;
@@ -61,6 +66,7 @@ public slots:
     void searchBooks();
     void searchCompleter();
     void addBook();
+    void addCopy();
     void editBook();
     void confirmEditBook();
     void deleteBook();

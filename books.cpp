@@ -12,6 +12,8 @@ Books::Books(QWidget *parent) :
     proxyModel->setSourceModel(model);
 
     //actions
+    addCopyAction = new QAction("Add Copies",this);
+    removeCopyAction = new QAction("Remove Copy",this);
     editBookAction = new QAction("Edit", this);
     deleteBookAction = new QAction("Delete",this);
     issueBookAction = new QAction("Issue Book", this);
@@ -38,7 +40,7 @@ void Books::createWidgets()
 
 
     isbk = new IssueBook;
-    ibw = new IssueBookWizard(this);
+    //ibw = new IssueBookWizard(this);
     completer = new QCompleter(model);
 
 
@@ -63,11 +65,12 @@ void Books::createWidgets()
     searchRadioTitle->setChecked(true);
 
     //actions
+    booksTable->addAction(addCopyAction);
     booksTable->addAction(this->editBookAction);
     booksTable->addAction(this->deleteBookAction);
     booksTable->addAction(this->issueBookAction);
     booksTable->addAction(this->viewSummaryAction);
-    booksTable->addAction(new QAction("Add Copy",this));
+
     booksTable->addAction(new QAction("remove Copy",this));
 }
 
@@ -100,6 +103,7 @@ void Books::createConnections()
 {
     QObject::connect(this->addBookButton,SIGNAL(clicked()),this,SLOT(addBook()));
 
+
     QObject::connect(this->branchSelector,SIGNAL(activated(QString)),this,SLOT(filterBooks(QString)));
     QObject::connect(this->searchRadioTitle,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
     QObject::connect(this->searchRadioAuthor,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
@@ -107,10 +111,11 @@ void Books::createConnections()
     QObject::connect(this->searchButton,SIGNAL(clicked()),this,SLOT(searchBooks()));
 
     //actions
-    QObject::connect(this->editBookAction,SIGNAL(triggered()),this,SLOT(editBook()));
-    QObject::connect(this->deleteBookAction,SIGNAL(triggered()),this,SLOT(deleteBook()));
-    QObject::connect(this->issueBookAction,SIGNAL(triggered()),this,SLOT(issueBook()));
-    QObject::connect(this->viewSummaryAction,SIGNAL(triggered()),this,SLOT(viewSummary()));
+    QObject::connect(addCopyAction,SIGNAL(triggered()),this,SLOT(addCopy()));
+    QObject::connect(editBookAction,SIGNAL(triggered()),this,SLOT(editBook()));
+    QObject::connect(deleteBookAction,SIGNAL(triggered()),this,SLOT(deleteBook()));
+    QObject::connect(issueBookAction,SIGNAL(triggered()),this,SLOT(issueBook()));
+    QObject::connect(viewSummaryAction,SIGNAL(triggered()),this,SLOT(viewSummary()));
 
     QObject::connect(isbk->issueButton,SIGNAL(clicked()),SLOT(confirmIssueBook()));
     QObject::connect(isbk->studentsTable,SIGNAL(clicked(QModelIndex)),this,SLOT(enablebut()));
@@ -155,6 +160,23 @@ void Books::addBook()
 
     model->select();
 
+}
+void Books::addCopy()
+{
+    qDebug() << "addcopy clicked";
+    QItemSelectionModel *select = booksTable->selectionModel();
+    QModelIndex i = select->currentIndex();
+    QSqlRecord record = model->record(i.row());
+    QString bid = record.field("bookID").value().toString();
+    QString isbn = record.field("ISBN").value().toString();
+
+    AddCopyWizard *aacw = acw;
+
+    acw = new AddCopyWizard(bid,isbn,this);
+
+    delete aacw;
+
+    acw->show();
 }
 
 void Books::editBook()
@@ -219,12 +241,19 @@ void  Books::issueBook()
     QItemSelectionModel *select = booksTable->selectionModel();
     QModelIndex i = select->currentIndex();
     QSqlRecord record = model->record(i.row());
-    QString isbn = record.field("ISBN").value().toString();
+    QString bookID = record.field("bookID").value().toString();
 
-    ibw->sbn->setISBN(isbn);
-    qDebug() << isbn;
+
+    qDebug() << bookID;
+    IssueBookWizard *iibw = ibw;
+
+    ibw = new IssueBookWizard(bookID,this);
+    delete iibw;
+
 
     ibw->show();
+
+
 }
 void Books::confirmIssueBook()
 {
