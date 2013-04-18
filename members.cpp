@@ -4,7 +4,9 @@ Members::Members(QWidget *parent) :
     QWidget(parent)
 {
     createModels();
+
     createWidgets();
+    createActions();
     createLayout();
     createConnections();
 }
@@ -17,6 +19,19 @@ void Members::createModels()
     model->setTable("members");
     model->select();
     proxyModel->setSourceModel(model);
+}
+void Members::createActions()
+{
+    editMemberAction = new QAction("Edit",this);
+    deleteMemberAction = new QAction("Delete Student", this);
+    returBookAction = new QAction("return Book", this);
+    viewSummaryAction = new QAction("view Summary",this);
+
+    membersTable->addAction(editMemberAction);
+    membersTable->addAction(returBookAction);
+    membersTable->addAction(viewSummaryAction);
+    membersTable->addAction(deleteMemberAction);
+
 }
 
 void Members::createWidgets()
@@ -43,6 +58,7 @@ void Members::createWidgets()
     branchSelector->addItem("Faculty");
 
     searchRadioName->setChecked(true);
+    membersTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 }
 void Members::createLayout()
@@ -75,6 +91,10 @@ void Members::createConnections()
     QObject::connect(this->searchButton,SIGNAL(clicked()),this,SLOT(searchMembers()));
 
     QObject::connect(amw,SIGNAL(accepted()),this->model,SLOT(select()));
+
+    //qactions
+    QObject::connect(returBookAction,SIGNAL(triggered()),this,SLOT(returnBook()));
+    QObject::connect(viewSummaryAction,SIGNAL(triggered()),this,SLOT(viewSummary()));
 }
 
 
@@ -105,4 +125,17 @@ void Members::addMember()
 {
     amw->show();
     model->select();
+}
+void Members::returnBook()
+{
+    ReturnBookWizarad *rrbw = rbw;
+
+    rbw = new ReturnBookWizarad(this);
+    delete rrbw;
+
+    rbw->show();
+}
+void Members::viewSummary()
+{
+
 }

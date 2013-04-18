@@ -4,6 +4,7 @@
 #include <QtWidgets>
 #include <QtSql>
 #include "wizards/addmemberwizard.h"
+#include "wizards/returnbookwizarad.h"
 
 class Members : public QWidget
 {
@@ -33,12 +34,15 @@ private:
     QAction *viewSummaryAction;
 
     AddMemberWizard *amw;
+    ReturnBookWizarad *rbw;
 
     QGridLayout *searchLayout;
     QHBoxLayout *memberTopLayout;
     QVBoxLayout *memberLayout;
 
+
     void createModels();
+    void createActions();
     void createWidgets();
     void createLayout();
     void createConnections();
@@ -59,9 +63,9 @@ public slots:
    // void editMember();
     //void deleteMember();
 
-   // void returnBook();
+    void returnBook();
 
-    //void viewSummary();
+    void viewSummary();
 
 };
 

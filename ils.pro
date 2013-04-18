@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     admin.cpp \
     members.cpp \
     wizards/editbookwizard.cpp \
-    wizards/addcopywizard.cpp
+    wizards/addcopywizard.cpp \
+    wizards/returnbookwizarad.cpp
 
 HEADERS  += \
     welcome.h \
@@ -32,7 +33,8 @@ HEADERS  += \
     admin.h \
     members.h \
     wizards/editbookwizard.h \
-    wizards/addcopywizard.h
+    wizards/addcopywizard.h \
+    wizards/returnbookwizarad.h
 
 FORMS    +=
 
