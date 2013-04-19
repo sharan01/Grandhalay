@@ -19,7 +19,7 @@ Books::Books(QWidget *parent) :
     issueBookAction = new QAction("Issue Book", this);
     viewSummaryAction = new QAction("summary", this);
 
-    //widgets
+
     createWidgets();
     createLayout();
     createConnections();
