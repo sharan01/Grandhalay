@@ -27,6 +27,7 @@ class CopyFinalPage : public QWizardPage
     Q_OBJECT
 public:
     CopyFinalPage(QWidget *parent = 0);
+    ~CopyFinalPage();
     void initializePage();
 private:
     std::vector<QLineEdit *> bookNoVector;

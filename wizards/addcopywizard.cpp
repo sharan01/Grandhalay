@@ -46,11 +46,17 @@ NumPage::NumPage(QWidget *parent) :
 
     registerField("noCopies",&noCopies);
 }
-
+// ==================================================== //
 CopyFinalPage::CopyFinalPage(QWidget *parent) :
     QWizardPage(parent)
 {
     setLayout(&layout);
+}
+CopyFinalPage::~CopyFinalPage()
+{
+    for(auto &e : bookNoVector){
+        delete e;
+    }
 }
 
 void CopyFinalPage::initializePage()
