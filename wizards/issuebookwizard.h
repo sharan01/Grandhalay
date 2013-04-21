@@ -26,7 +26,7 @@ private:
 
     mutable QLineEdit bookNumber; //invisible
 public:
-    explicit SelectBookNumber(QString, QWidget *parent=0);
+    explicit SelectBookNumber(QString, QWidget *parent=nullptr);
     int nextId() const;
 signals:
 

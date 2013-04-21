@@ -13,10 +13,7 @@ AddCopyWizard::AddCopyWizard(QString bookID, QString ISBN, QWidget *parent) :
 
 
 }
-AddCopyWizard::AddCopyWizard(QWidget *parent) :
-    QWizard(parent)
-{
-}
+
 void AddCopyWizard::accept()
 {
     int copies = field("noCopies").toInt();

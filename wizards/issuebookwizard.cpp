@@ -85,18 +85,18 @@ IssueBookPage::IssueBookPage(QString s, QWidget *parent) :
 
 
 
-    ISBNI->setDisabled(true);
-    titleI->setDisabled(true);
-    authorI->setDisabled(true);
-    copiesLeftI->setDisabled(true);
-    returnDateI->setDate(QDate::currentDate());
-    searchBar->setPlaceholderText("search");
+    ISBNI.setDisabled(true);
+    titleI.setDisabled(true);
+    authorI.setDisabled(true);
+    copiesLeftI.setDisabled(true);
+    returnDateI.setDate(QDate::currentDate());
+    searchBar.setPlaceholderText("search");
 
 
-    studentsTable->setModel(model);
-    studentsTable->setColumnHidden(1,true);
-    studentsTable->setSortingEnabled(true);
-    studentsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    studentsTable.setModel(&model);
+    studentsTable.setColumnHidden(1,true);
+    studentsTable.setSortingEnabled(true);
+    studentsTable.setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
     getBookInfo();
@@ -109,14 +109,14 @@ IssueBookPage::IssueBookPage(QString s, QWidget *parent) :
 
 
 
-    QObject::connect(this->searchBar,SIGNAL(textChanged(QString)),this,SLOT(searchStudent(QString)));
+    QObject::connect(&searchBar,SIGNAL(textChanged(QString)),this,SLOT(searchStudent(QString)));
 }
 
 void IssueBookPage::createModels()
 {
-    model = new QSqlRelationalTableModel;
-    model->setTable("students");
-    model->select();
+
+    model.setTable("students");
+    model.select();
 
 }
 void IssueBookPage::createWidgets()
@@ -171,9 +171,9 @@ void IssueBookPage::getBookInfo()
 
             qDebug() << "query has nxt";
             //isbn
-            ISBNI->setText(qry.value("ISBN").toString());
-            titleI->setText(qry.value("Title").toString());
-            authorI->setText(qry.value("Author").toString());
+            ISBNI.setText(qry.value("ISBN").toString());
+            titleI.setText(qry.value("Title").toString());
+            authorI.setText(qry.value("Author").toString());
             //copiesLeftI->setDisabled(true);
 
 
@@ -198,6 +198,6 @@ int IssueBookPage::nextId() const
 // slots ======================
 void IssueBookPage::searchStudent(QString s)
 {
-    model->setFilter("rollNo LIKE '%"+s+"%'");
+    model.setFilter("rollNo LIKE '%"+s+"%'");
     qDebug() << "rollNo LIKE '%"+s+"%'";
 }

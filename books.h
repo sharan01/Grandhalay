@@ -68,14 +68,12 @@ public slots:
     void addBook();
     void addCopy();
     void editBook();
-    void confirmEditBook();
     void deleteBook();
 
     void issueBook();
     void confirmIssueBook();
 
     void viewSummary();
-    void enablebut();
 };
 
 #endif // BOOKS_H

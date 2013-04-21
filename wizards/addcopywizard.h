@@ -42,7 +42,6 @@ class AddCopyWizard : public QWizard
 {
     Q_OBJECT
 public:
-    AddCopyWizard(QWidget *parent = 0);
     AddCopyWizard(QString bookID,QString ISBN, QWidget *parent = 0);
     void accept();
 private:

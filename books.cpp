@@ -101,14 +101,14 @@ void Books::createLayout()
 
 void Books::createConnections()
 {
-    QObject::connect(this->addBookButton,SIGNAL(clicked()),this,SLOT(addBook()));
+    QObject::connect(addBookButton,SIGNAL(clicked()),this,SLOT(addBook()));
+    QObject::connect(abw,SIGNAL(accepted()),model,SLOT(select()));
 
-
-    QObject::connect(this->branchSelector,SIGNAL(activated(QString)),this,SLOT(filterBooks(QString)));
-    QObject::connect(this->searchRadioTitle,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
-    QObject::connect(this->searchRadioAuthor,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
-    QObject::connect(this->searchBar,SIGNAL(returnPressed()),this,SLOT(searchBooks()));
-    QObject::connect(this->searchButton,SIGNAL(clicked()),this,SLOT(searchBooks()));
+    QObject::connect(branchSelector,SIGNAL(activated(QString)),this,SLOT(filterBooks(QString)));
+    QObject::connect(searchRadioTitle,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
+    QObject::connect(searchRadioAuthor,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
+    QObject::connect(searchBar,SIGNAL(returnPressed()),this,SLOT(searchBooks()));
+    QObject::connect(searchButton,SIGNAL(clicked()),this,SLOT(searchBooks()));
 
     //actions
     QObject::connect(addCopyAction,SIGNAL(triggered()),this,SLOT(addCopy()));
@@ -117,10 +117,8 @@ void Books::createConnections()
     QObject::connect(issueBookAction,SIGNAL(triggered()),this,SLOT(issueBook()));
     QObject::connect(viewSummaryAction,SIGNAL(triggered()),this,SLOT(viewSummary()));
 
-    QObject::connect(isbk->issueButton,SIGNAL(clicked()),SLOT(confirmIssueBook()));
-    QObject::connect(isbk->studentsTable,SIGNAL(clicked(QModelIndex)),this,SLOT(enablebut()));
 
-    QObject::connect(abw,SIGNAL(accepted()),model,SLOT(select()));
+
 }
 
 void Books::filterBooks(QString s)
@@ -206,27 +204,6 @@ void Books::editBook()
     model->select();
 }
 
-void Books::confirmEditBook()
-{/*
-    QString bni = edbk->bookNoInput->text();
-    QString ti = edbk->titleInput->text();
-    QString ai = edbk->authorInput->text();
-    QString  ci = edbk->copiesInput->text();
-    QString  pi = edbk->priceInput->text();
-    QString  bi = edbk->branchInput->currentText();
-    QString qr = QString("UPDATE books SET title='%1',author='%2',copies='%3',branch='%4',price='%5',number='%6' WHERE id=%7").arg(ti,ai,ci,bi,pi,bni,QString::number(edbk->currentID));
-
-    qDebug() << qr;
-    QSqlQuery  q(qr);
-    model->select();
-    edbk->close();
-
-
-    foreach(QLineEdit *widget, edbk->findChildren<QLineEdit*>()) {
-        widget->clear();
-    }*/
-}
-
 void Books::deleteBook()
 {
 
@@ -289,7 +266,4 @@ void Books::viewSummary()
 {
 
 }
-void Books::enablebut()
-{
-    isbk->issueButton->setEnabled(true);
-}
+
