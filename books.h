@@ -8,7 +8,7 @@
 #include "issuebook.h"
 #include "wizards/issuebookwizard.h"
 #include "wizards/editbookwizard.h"
-#
+#include "wizards/summarywizard.h"
 #include <memory>
 
 class Books : public QWidget
@@ -48,6 +48,7 @@ private:
     EditBookWizard *ebw;
     IssueBook *isbk;
     IssueBookWizard *ibw;
+    summaryWizard *sw;
 
     void createWidgets();
     void createLayout();

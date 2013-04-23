@@ -12,12 +12,35 @@ IssueBookWizard::IssueBookWizard(QString bkid, QWidget *parent) :
 
 void IssueBookWizard::accept()
 {
-    QDialog::accept();
 
 
+    QString bookNumber = field("bknm").toString();
 
-    qDebug() << field("bknm").toString(); // book number selected;
-    //this->restart();
+    int issueDate = QDate::currentDate().toJulianDay();
+    int returnDate = field("returnDate").toDate().toJulianDay();
+
+    qDebug() << "book no selected : " << field("bknm").toString();
+    qDebug() << "return date : " << field("returnDate").toDate();
+
+
+        QString memberID;
+        qDebug() << "next is clicked";
+        QItemSelectionModel *select = ibp.studentsTable.selectionModel();
+        QModelIndex i = select->currentIndex();
+        QSqlRecord record = ibp.model.record(i.row());
+        memberID = record.field("memberID").value().toString();
+        qDebug() << "the student selected is " << memberID;
+
+        QString qr = QString("INSERT INTO issue(bookID,bookNo, memberID, issueDate, returnDate) VALUES(%1,%2,%3,%4,%5)").arg(bookID).arg(bookNumber).arg(memberID).arg(issueDate).arg(returnDate);
+        QString qr2 = QString("update bookNumbers set issued=1 where bookNo=%1").arg(bookNumber);
+
+        qDebug() << qr;
+        qDebug() << qr2;
+        QSqlQuery  q(qr);
+        QSqlQuery q2(qr2);
+
+
+QDialog::accept();
 }
 
  // ========= select book number page =============//
@@ -37,12 +60,15 @@ SelectBookNumber::SelectBookNumber(QString s, QWidget *parent) :
     copyNumbers.setMaximumSize(120,500);
 
     model.setTable("bookNumbers");
+    //model.setFilter("issued=0");
     model.select();
     copyNumbers.setModel(&model);
     copyNumbers.setColumnHidden(0,true);
     copyNumbers.setColumnHidden(1,true);
+    copyNumbers.setColumnHidden(3,true);
 
     model.setFilter("bookID='"+bookID +"'");
+    model.setFilter("issued='"+QString::number(0) +"'");
 
 
     registerField("bknm",&bookNumber);
@@ -97,6 +123,7 @@ IssueBookPage::IssueBookPage(QString s, QWidget *parent) :
     studentsTable.setColumnHidden(1,true);
     studentsTable.setSortingEnabled(true);
     studentsTable.setSelectionBehavior(QAbstractItemView::SelectRows);
+    studentsTable.setColumnHidden(0,true);
 
 
     getBookInfo();
@@ -104,7 +131,7 @@ IssueBookPage::IssueBookPage(QString s, QWidget *parent) :
 
 
 
-
+    registerField("returnDate",&returnDateI);
 
 
 
@@ -115,7 +142,7 @@ IssueBookPage::IssueBookPage(QString s, QWidget *parent) :
 void IssueBookPage::createModels()
 {
 
-    model.setTable("students");
+    model.setTable("members");
     model.select();
 
 }
@@ -198,6 +225,6 @@ int IssueBookPage::nextId() const
 // slots ======================
 void IssueBookPage::searchStudent(QString s)
 {
-    model.setFilter("rollNo LIKE '%"+s+"%'");
+    model.setFilter("Roll LIKE '%"+s+"%'");
     qDebug() << "rollNo LIKE '%"+s+"%'";
 }

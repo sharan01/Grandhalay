@@ -34,7 +34,7 @@ void AddBookWizard::accept()
     QString ci = field("copies").toString();
     QString bi = branches[field("branch").toInt()];
     //db stuffbooks(title,author,copies,branch)
-    QString qr = QString("INSERT INTO books(bookID, ISBN, Title, Author, Publisher, PublishedDate, Branch, copies) VALUES(2,'%1','%2','%3','%4','%5','%6','%7')").arg(isbni,ti,ai,pubi,pubdi,bi,ci);
+    QString qr = QString("INSERT INTO books(ISBN, Title, Author, Publisher, PublishedDate, Branch, copies) VALUES('%1','%2','%3','%4','%5','%6','%7')").arg(isbni,ti,ai,pubi,pubdi,bi,ci);
     qDebug() << qr;
     QSqlQuery  q(qr);
 
@@ -42,7 +42,7 @@ void AddBookWizard::accept()
     for(int i=0; i<cp; i++){
         //qDebug() << field("book" + QString::number(i+1)).toString();
 
-        QString qqr = QString("INSERT INTO bookNumbers VALUES(%1,'%2','%3')").arg(bookid,isbni,field("book" + QString::number(i+1)).toString());
+        QString qqr = QString("INSERT INTO bookNumbers(bookID,ISBN,bookNo) VALUES(%1,'%2','%3')").arg(bookid,isbni,field("book" + QString::number(i+1)).toString());
         qDebug() << qqr;
         QSqlQuery qq(qqr);
 

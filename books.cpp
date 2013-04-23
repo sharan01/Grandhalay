@@ -102,7 +102,7 @@ void Books::createLayout()
 void Books::createConnections()
 {
     QObject::connect(addBookButton,SIGNAL(clicked()),this,SLOT(addBook()));
-    QObject::connect(abw,SIGNAL(accepted()),model,SLOT(select()));
+    //QObject::connect(abw,SIGNAL(accepted()),model,SLOT(select()));
 
     QObject::connect(branchSelector,SIGNAL(activated(QString)),this,SLOT(filterBooks(QString)));
     QObject::connect(searchRadioTitle,SIGNAL(toggled(bool)),this,SLOT(searchCompleter()));
@@ -157,6 +157,7 @@ void Books::addBook()
     abw->show();
 
     model->select();
+
 
 }
 void Books::addCopy()
@@ -264,6 +265,17 @@ void Books::confirmIssueBook()
 
 void Books::viewSummary()
 {
+    QItemSelectionModel *select = booksTable->selectionModel();
+    QModelIndex i = select->currentIndex();
+    QSqlRecord record = model->record(i.row());
+    QString bookID = record.field("bookID").value().toString();
+    qDebug() << "bookid of summary caled" << bookID;
+    summaryWizard *ssw = sw;
+
+    delete ssw;
+    sw = new summaryWizard(bookID,this);
+
+    sw->show();
 
 }
 

@@ -13,8 +13,8 @@ BookInfoOnline::BookInfoOnline()
 BookInfoOnline::~BookInfoOnline()
 {
     qDebug() << "book info online destructed";
-    delete nam;
-    delete reply;
+    //delete nam;
+    //delete reply;
 }
 
 void BookInfoOnline::fetchBookInfo(QString isbn)
