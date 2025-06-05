@@ -12,9 +12,10 @@ class SelectBookPage : public QWizardPage
     Q_OBJECT
 public:
     explicit SelectBookPage(QWidget *parent = 0);
-    void getStudentInfo();
+    void setMember(const QString &roll);
+    int nextId() const;
 private:
-    QString bookID;
+    QString memberID;
     QLabel rollLabel;
     QLabel nameLabel;
     QLabel branchLabel;
@@ -26,7 +27,7 @@ private:
     QLineEdit name;
     QLineEdit branch;
 
-    mutable QLineEdit studentRollEdit; // invisible
+    QLineEdit selectedBookEdit; // invisible
 
 
     QTableView issuedBooksTable;
@@ -36,11 +37,11 @@ private:
 
 
     QGridLayout layout;
+private slots:
+    void rowSelected(const QModelIndex &index);
 
 
-signals:
 
-public slots:
 };
 // =========================== //
 class ReturnFinalPage : public QWizardPage
@@ -49,9 +50,10 @@ class ReturnFinalPage : public QWizardPage
 public:
     explicit ReturnFinalPage(QWidget *parent = 0);
 
-signals:
+private:
+    QLabel infoLabel;
+    QVBoxLayout layout;
 
-public slots:
 };
 
 
@@ -61,11 +63,16 @@ class ReturnBookWizarad : public QWizard
     Q_OBJECT
 public:
     explicit ReturnBookWizarad(QWidget *parent = 0);
+    void setMemberRoll(const QString &roll);
+    QString memberRoll() const { return m_memberRoll; }
     void accept();
-    
+
+private:
+    QString m_memberRoll;
+    SelectBookPage sbp;
+    ReturnFinalPage rfp;
 signals:
     
-public slots:
     
 };
 

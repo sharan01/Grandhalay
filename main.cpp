@@ -4,8 +4,7 @@
 #include <QtCore>
 #include <memory>
 
-//#define PATH_TO_DB "/home/srn/Desktop/ils/ils/ils.sqlite"
-#define PATH_TO_DB "/home/srn/Documents/ils/ils.sqlite"
+
 
 
 using namespace std;
@@ -20,7 +19,8 @@ int main(int argc, char *argv[])
 
 
 
-    ConnectDB db(PATH_TO_DB);
+    QString dbPath = (argc > 1) ? argv[1] : QString("ils.sqlite");
+    ConnectDB db(dbPath);
 
     Welcome w;
     MainWindow mw;

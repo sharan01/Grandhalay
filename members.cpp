@@ -128,10 +128,17 @@ void Members::addMember()
 }
 void Members::returnBook()
 {
-    ReturnBookWizarad *rrbw = rbw;
+    QModelIndex idx = membersTable->currentIndex();
+    if(!idx.isValid())
+        return;
 
+    QSqlRecord record = model->record(idx.row());
+    QString roll = record.value("Roll").toString();
+
+    ReturnBookWizarad *old = rbw;
     rbw = new ReturnBookWizarad(this);
-    delete rrbw;
+    rbw->setMemberRoll(roll);
+    delete old;
 
     rbw->show();
 }
